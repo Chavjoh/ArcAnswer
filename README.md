@@ -19,8 +19,10 @@ ArcAnswer is a collaborative website of questions and answers on various topics 
 
 ## Documentation
 
-About the project : <a href="https://github.com/Chavjoh/ArcAnswer/wiki">Wiki</a> 
-About the framework : <a href="http://framework.zend.com/manual/2.2/en/index.html">Zend Framework 2.2</a>
+* About the project : <a href="https://github.com/Chavjoh/ArcAnswer/wiki">Wiki</a> 
+* About the framework : <a href="http://framework.zend.com/manual/2.2/en/index.html">Zend Framework</a>
+* About the language : <a href="http://www.php.net/manual/en/">PHP</a>
+* About the database : <a href="http://dev.mysql.com/doc/">MySQL</a>
 
 ## Feedback
 
