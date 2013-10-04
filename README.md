@@ -1,7 +1,7 @@
 ArcAnswer
 =========
 
-ArcAnswer is a collaborative website of questions and answers on various topics of courses taught at the High School Arc. 
+ArcAnswer is a collaborative website of questions and answers on various topics of courses taught at the <a href="http://www.he-arc.ch">High School Arc</a>. 
 
 ## Highlights
 
@@ -17,14 +17,15 @@ ArcAnswer is a collaborative website of questions and answers on various topics 
 * Web server (for example Apache)
 * MySQL (InnoDB and version 5+ required)
 
-### Documentation
+## Documentation
 
-Check the <a href="https://github.com/Chavjoh/ArcAnswer/wiki">Wiki</a>
+About the project : <a href="https://github.com/Chavjoh/ArcAnswer/wiki">Wiki</a> 
+About the framework : <a href="http://framework.zend.com/manual/2.2/en/index.html">Zend Framework 2.2</a>
 
-### Feedback
+## Feedback
 
 Please submit issues, and send your feedback and suggestions as often as you have them.
 
-### License
+## License
 
 This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 Unported License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/ or send a letter to Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, USA.
