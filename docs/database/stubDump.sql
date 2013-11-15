@@ -17,10 +17,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de données: `mydb`
+-- Base de données: `arcanswer`
 --
-CREATE DATABASE IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `mydb`;
+CREATE DATABASE IF NOT EXISTS `arcanswer` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `arcanswer`;
 
 -- --------------------------------------------------------
 
