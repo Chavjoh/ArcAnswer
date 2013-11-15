@@ -66,6 +66,24 @@ return array(
 							),
 						),
 					),
+                    'hideInfo' => array(
+                        'type' => 'literal',
+                        'options' => array(
+                            'route' => '/hideInfo',
+                            'defaults' => array(
+                                'action' => 'hideInformationBox',
+                            ),
+                        ),
+                    ),
+                    'showInfo' => array(
+                        'type' => 'literal',
+                        'options' => array(
+                            'route' => '/showInfo',
+                            'defaults' => array(
+                                'action' => 'showInformationBox',
+                            ),
+                        ),
+                    ),
 				),
 			),
 
