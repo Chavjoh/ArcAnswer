@@ -165,4 +165,19 @@ return array(
 			'arcanswer' => __DIR__ . '/../view',
 		),
 	),
+
+	'doctrine' => array(
+		'driver' => array(
+			'ArcAnswer_driver' => array(
+				'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+				'cache' => 'array',
+				'paths' => array(__DIR__ . '/../src/' . 'ArcAnswer/Entity')
+			),
+			'orm_default' => array(
+				'drivers' => array(
+					'ArcAnswer\Entity' =>'ArcAnswer_driver'
+				)
+			),
+		)
+	),
 );
