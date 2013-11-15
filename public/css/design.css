@@ -91,7 +91,7 @@ button.searchButton {
 
 input.searchButton,
 button.searchButton {
-	background-image: url('../images/search.png');
+	background-image: url('../img/search.png');
 	background-position: center center;
 	background-repeat: no-repeat;
 	margin: 0px 0px 0px -30px;
@@ -158,7 +158,6 @@ hr.clear {
 	border-right: 1px solid #131313;
 	border-bottom: 1px solid #292929;
 	border-radius: 3px;
-	margin: 20px 0px;
 	padding: 10px 10px;
 	margin: 10px;
 	display: block;
@@ -180,13 +179,13 @@ hr.clear {
 }
 
 .best {
-	background-image: url('../images/best.png');
+	background-image: url('../img/best.png');
 	background-position: right 10px top 10px;
 	background-repeat: no-repeat;
 }
 
 .raised {
-	background-image: url('../images/gem.png');
+	background-image: url('../img/gem.png');
 	background-position: right 10px top 10px;
 	background-repeat: no-repeat;
 }
@@ -241,20 +240,6 @@ hr.clear {
 .vote .action {
 	display: block;
 }
-/*
-.vote .action a {
-	color: #B6B6B6;
-	border: 2px solid #B6B6B6;
-	padding: 0px 1px;
-	margin: 2px 3px;
-	border-radius: 2px;
-	font-size: 0.5em;
-	font-weight: bold;
-	display: inline-block;
-	width: 16px;
-	height: 16px;
-	text-align: center;
-}*/
 
 .thread .information {
 	float: right;
