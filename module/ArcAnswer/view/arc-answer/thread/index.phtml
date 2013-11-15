@@ -3,3 +3,19 @@
 	<li>Action : Index</li>
 	<li>Search : <?php echo $this->search; ?></li>
 </ul>
+<table class="table">
+	<tr>
+		<th>ID</th>
+		<th>Titre</th>
+		<th>Question</th>
+		<th>Utilisateur</th>
+	</tr>
+	<?php foreach($this->threads as $thread) { ?>
+	<tr>
+		<td><?php echo $thread->id ?></td>
+		<td><?php echo $thread->title ?></td>
+		<td><?php echo $thread->mainPost->content ?></td>
+		<td><?php echo $thread->mainPost->user->nickname ?></td>
+	</tr>
+	<?php } ?>
+</table>
