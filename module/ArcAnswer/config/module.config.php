@@ -160,7 +160,8 @@ return array(
 	'view_manager' => array(
 		'template_map' => array(
 			'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
-		),
+            'layout/infoBox' => __DIR__ . '/../view/layout/infoBox.phtml',
+        ),
 		'template_path_stack' => array(
 			'arcanswer' => __DIR__ . '/../view',
 		),

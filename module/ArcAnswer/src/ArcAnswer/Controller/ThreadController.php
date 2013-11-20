@@ -30,7 +30,8 @@ class ThreadController extends AbstractActionController
 		$resultSet = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Thread')->findAll();
 		return new ViewModel(array(
 			'search' => $this->params()->fromRoute('search', ''),
-			'threads' => $resultSet
+			'threads' => $resultSet,
+            'infoBoxVisibility' => $this->infoBoxVisibility(),
 		));
 	}
 
@@ -51,14 +52,13 @@ class ThreadController extends AbstractActionController
         $this->redirect()->toRoute('thread');
     }
 
-    private function getInformationBox()
+    private function infoBoxVisibility()
     {
+        $cookie = $this->getRequest()->getCookie();
 
-        if( true )
-        {
-            // add info box to the view
+        if (isset($cookie->informationBox)) {
+            return $cookie->informationBox;
         }
-
+        return 'show';
     }
-
 }

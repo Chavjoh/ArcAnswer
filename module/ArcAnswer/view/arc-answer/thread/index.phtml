@@ -3,6 +3,10 @@
 	<li>Action : Index</li>
 	<li>Search : <?php echo $this->search; ?></li>
 </ul>
+
+<?php if ($this->infoBoxVisibility == 'show')
+    echo $this->partial('layout/infoBox', array()); ?>
+
 <table class="table">
 	<tr>
 		<th>ID</th>
