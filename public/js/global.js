@@ -14,4 +14,21 @@ $( document ).ready(function() {
 		width: '100%',
 		disable_search: true
 	});
+
+
+    /*
+     * Removes the information box in the dom
+     * TODO get the url in a dynamic way.
+     */
+    $("section#infoBox .close").click(function() {
+        $.ajax({
+            url: "http://127.0.0.1/thread/hideInfo",
+            type: 'POST',
+            success: function(data){
+                if(data.success) {
+                    $("#infoBox").remove();
+                }
+            }
+        });
+    });
 });

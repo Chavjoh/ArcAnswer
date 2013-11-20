@@ -3,6 +3,7 @@ namespace ArcAnswer\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\View\Model\JsonModel;
 use Zend\Http\Header;
 use ArcAnswer\Entity\Thread;
 use Doctrine\ORM\EntityManager;
@@ -43,13 +44,19 @@ class ThreadController extends AbstractActionController
     public function hideInformationBoxAction()
     {
         $this->getResponse()->getHeaders()->addHeader( new SetCookie( 'informationBox', 'hide' ) );
-        $this->redirect()->toRoute('thread');
+        $result = new JsonModel(array(
+            'success'=>true,
+        ));
+        return $result;
     }
 
     public function showInformationBoxAction()
     {
         $this->getResponse()->getHeaders()->addHeader( new SetCookie( 'informationBox', 'show' ) );
-        $this->redirect()->toRoute('thread');
+        $result = new JsonModel(array(
+            'success'=>true,
+        ));
+        return $result;
     }
 
     private function infoBoxVisibility()
