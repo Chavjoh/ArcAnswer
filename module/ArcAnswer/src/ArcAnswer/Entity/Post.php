@@ -7,6 +7,9 @@ use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilterAwareInterface;
 
+use ArcAnswer\Entity\Thread;
+use ArcAnswer\Entity\User;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,35 +24,35 @@ class Post implements InputFilterAwareInterface
 
 	/**
 	 * @ORM\Id
-	 * @ORM\Column(type="integer", name="id")
+	 * @ORM\Column(type="integer", name="id_post")
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	protected $id;
 
 	/**
-	 * @ORM\Column(type="string", name="content", length=500)
+	 * @ORM\Column(type="string", name="content_post")
 	 */
 	protected $content;
 
 	/**
-	 * @ORM\Column(type="datetime", name="`date`")
+	 * @ORM\Column(type="datetime", name="date_post")
 	 */
 	protected $date;
 
 	/**
-	 * @ORM\Column(type="boolean", name="solution")
+	 * @ORM\Column(type="boolean", name="solution_post")
 	 */
 	protected $solution;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="User")
-	 * @ORM\JoinColumn(name="owner_user_id", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="id_user_post", referencedColumnName="id_user")
 	 */
 	protected $user;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Thread")
-	 * @ORM\JoinColumn(name="thread_id", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="id_thread_post", referencedColumnName="id_thread")
 	 */
 	protected $thread;
 

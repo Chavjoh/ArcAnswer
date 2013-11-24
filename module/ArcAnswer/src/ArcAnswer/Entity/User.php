@@ -1,7 +1,6 @@
 <?php
 namespace ArcAnswer\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilterInterface;
@@ -21,29 +20,29 @@ class User implements InputFilterAwareInterface
 
 	/**
 	 * @ORM\Id
-	 * @ORM\Column(type="integer", name="id")
+	 * @ORM\Column(type="integer", name="id_user")
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	protected $id;
 
 	/**
-	 * @ORM\Column(type="string", name="login", length=50)
+	 * @ORM\Column(type="string", name="login_user", length=250)
 	 */
 	protected $login;
 
 	/**
-	 * @ORM\Column(type="string", name="`password`", length=50)
+	 * @ORM\Column(type="string", name="password_user", length=40)
 	 */
 	protected $password;
 
 	/**
-	 * @ORM\Column(type="string", name="nickname", length=50)
+	 * @ORM\Column(type="string", name="nickname_user", length=250)
 	 */
 	protected $nickname;
 
 	public function __construct()
 	{
-		$this->posts = new ArrayCollection();
+		// Nothing here
 	}
 
 	public function __get($property)

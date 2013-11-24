@@ -7,57 +7,33 @@ use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilterAwareInterface;
 
-use ArcAnswer\Entity\Post;
-use ArcAnswer\Entity\Tag;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Thread Entity.
+ * Tag Entity.
  *
  * @ORM\Entity
- * @ORM\Table(name="thread")
+ * @ORM\Table(name="tag")
  */
-class Thread implements InputFilterAwareInterface
+class Tag implements InputFilterAwareInterface
 {
 	protected $inputFilter;
 
 	/**
 	 * @ORM\Id
-	 * @ORM\Column(type="integer", name="id_thread")
+	 * @ORM\Column(type="integer", name="id_tag")
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	protected $id;
 
 	/**
-	 * @ORM\Column(type="string", name="title_thread", length=250)
+	 * @ORM\Column(type="string", name="name_tag", length=250)
 	 */
-	protected $title;
-
-	/**
-	 * @ORM\ManyToOne(targetEntity="Post")
-	 * @ORM\JoinColumn(name="id_post_thread", referencedColumnName="id_post")
-	 */
-	protected $mainPost;
-
-	/**
-	 * @ORM\OneToMany(targetEntity="Post", mappedBy="thread")
-	 */
-	protected $posts;
-
-	/**
-	 * @ORM\ManyToMany(targetEntity="Tag")
-	 * @ORM\JoinTable(name="tag_thread",
-	 *      joinColumns={@ORM\JoinColumn(name="id_thread", referencedColumnName="id_thread")},
-	 *      inverseJoinColumns={@ORM\JoinColumn(name="id_tag", referencedColumnName="id_tag", unique=true)}
-	 *      )
-	 */
-	protected $tags;
+	protected $name;
 
 	public function __construct()
 	{
 		$this->posts = new ArrayCollection();
-		$this->tags = new ArrayCollection();
 	}
 
 	public function __get($property)

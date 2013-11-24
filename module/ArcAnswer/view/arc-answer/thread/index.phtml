@@ -4,22 +4,43 @@
 	<li>Search : <?php echo $this->search; ?></li>
 </ul>
 
-<?php if ($this->infoBoxVisibility == 'show')
-    echo $this->partial('layout/infoBox', array()); ?>
+<section id="main">
+	<?php if ($this->infoBoxVisibility == 'show')
+		echo $this->partial('layout/infoBox', array()); ?>
 
-<table class="table">
-	<tr>
-		<th>ID</th>
-		<th>Titre</th>
-		<th>Question</th>
-		<th>Utilisateur</th>
-	</tr>
-	<?php foreach($this->threads as $thread) { ?>
-	<tr>
-		<td><?php echo $thread->id ?></td>
-		<td><?php echo $thread->title ?></td>
-		<td><?php echo $thread->mainPost->content ?></td>
-		<td><?php echo $thread->mainPost->user->nickname ?></td>
-	</tr>
-	<?php } ?>
-</table>
+	<section class="half float-left">
+		<div class="center"> <img src="./img/fine.png" alt="Fine" /> </div>
+
+		<?php foreach($this->threads as $thread) { ?>
+			<a class="thread block green" href="#<?php echo $thread->id ?>">
+				<h1> <?php echo $thread->title ?> </h1>
+				<div class="vote">XXX <span>votes</span></div>
+				<div class="information">
+					<div class="author">
+						Post&eacute; par <span><?php echo $thread->mainPost->user->nickname ?></span>
+						le <?php echo $thread->mainPost->date->format('d.m.Y \&\a\g\r\a\v\e; H:i:s') ?>
+					</div>
+					<div class="tag">
+						<?php foreach($thread->tags as $tag) { ?>
+							<span><?php echo $tag->name ?></span>
+						<?php } ?>
+					</div>
+				</div>
+				<hr class="clear" />
+			</a>
+		<?php } ?>
+	</section>
+	<section class="half float-left">
+		<div class="center"> <img src="./img/panic.png" alt="Panic" /> </div>
+		<a class="block red" href="#">
+			<h1> Une question ? </h1>
+			Block
+		</a>
+		<a class="block red" href="#">
+			<h1> Une question ? </h1>
+			Block
+		</a>
+	</section>
+	<hr class="clear" />
+	<div class="center more"><a href="#">Afficher plus</a></div>
+</section>
