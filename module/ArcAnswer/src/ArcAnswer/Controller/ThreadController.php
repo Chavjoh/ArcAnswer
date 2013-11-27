@@ -5,7 +5,12 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use Zend\Http\Header;
+
+use ArcAnswer\Entity\Post;
 use ArcAnswer\Entity\Thread;
+use ArcAnswer\Entity\Tag;
+use ArcAnswer\Entity\User;
+
 use Doctrine\ORM\EntityManager;
 use Zend\Http\Header\SetCookie;
 use Doctrine\ORM\Query;
