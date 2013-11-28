@@ -48,7 +48,7 @@ class ThreadController extends AbstractActionController
 
     public function hideInformationBoxAction()
     {
-        $this->getResponse()->getHeaders()->addHeader( new SetCookie( 'informationBox', 'hide' ) );
+        $this->getResponse()->getHeaders()->addHeader( new SetCookie( 'informationBox', 'hide', time() + 365 * 60 * 60 * 24 ) );
         $result = new JsonModel(array(
             'success'=>true,
         ));
