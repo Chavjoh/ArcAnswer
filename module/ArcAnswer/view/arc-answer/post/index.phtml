@@ -1,5 +1,41 @@
 <ul>
 	<li>Controller : Post</li>
 	<li>Action : Index</li>
-	<li>Thread ID : <?php echo $this->threadid; ?></li>
+	<li>Thread ID : <?php echo $this->thread->id; ?></li>
 </ul>
+
+<section id="main">
+
+    <section class="block blue">
+        <h1> <?php echo $this->thread->title ?> </h1>
+        <div class="vote">
+            XXX <span>votes</span>
+            <div class="action">
+                <a href="#"><img src="/img/vote_up.png" alt="Vote Up" /></a>
+                <a href="#"><img src="/img/vote_down.png" alt="Vote Down" /></a>
+            </div>
+        </div>
+        <div class="message">
+            <div class="information">
+                <div class="author">
+                    Post&eacute; par <span><?php echo $thread->mainPost->user->nickname ?></span>
+                    le <?php echo $thread->mainPost->date->format('d.m.Y \&\a\g\r\a\v\e; H:i:s') ?>
+                </div>
+                <div class="tag">
+                    <?php foreach($this->thread->tags as $tag) { ?>
+                        <span><?php echo $tag->name ?></span>
+                    <?php } ?>
+                </div>
+            </div>
+            <div class="content">
+                <?php echo $this->thread->mainPost->content; ?>
+            </div>
+        </div>
+        <hr class="clear" />
+    </section>
+
+
+
+
+    <div class="center more"><a href="#">Afficher plus</a></div>
+</section>

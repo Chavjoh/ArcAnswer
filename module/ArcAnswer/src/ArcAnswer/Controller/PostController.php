@@ -6,10 +6,27 @@ use Zend\View\Model\ViewModel;
 
 class PostController extends AbstractActionController
 {
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    protected $em;
+
+    protected function getEntityManager()
+    {
+        if (null === $this->em)
+        {
+            $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        }
+        return $this->em;
+    }
+
 	public function indexAction()
 	{
+        $threadid = (int) $this->params()->fromRoute('threadid', 0);
+        $thread = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Thread')->find($threadid);
+        
 		return array(
-			'threadid' => (int) $this->params()->fromRoute('threadid', 0),
+			'thread' => $thread,
 		);
 	}
 
