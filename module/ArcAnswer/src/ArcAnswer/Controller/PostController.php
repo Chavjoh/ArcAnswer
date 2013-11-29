@@ -24,9 +24,14 @@ class PostController extends AbstractActionController
 	{
         $threadid = (int) $this->params()->fromRoute('threadid', 0);
         $thread = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Thread')->find($threadid);
-        
+
+        $query = $this->getEntityManager()->createQuery('SELECT SUM(v.value) as total FROM ArcAnswer\Entity\Vote v WHERE v.id_post = :id_post');
+        $query->setParameter('id_post', $thread->mainPost->id);
+        $votes = $query->getResult();
+
 		return array(
 			'thread' => $thread,
+            'votes' => $votes[0]['total'],
 		);
 	}
 

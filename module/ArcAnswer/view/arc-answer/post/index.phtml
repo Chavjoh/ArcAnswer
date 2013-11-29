@@ -1,15 +1,9 @@
-<ul>
-	<li>Controller : Post</li>
-	<li>Action : Index</li>
-	<li>Thread ID : <?php echo $this->thread->id; ?></li>
-</ul>
-
 <section id="main">
 
     <section class="block blue">
         <h1> <?php echo $this->thread->title ?> </h1>
         <div class="vote">
-            XXX <span>votes</span>
+            <?php echo $this->votes ?> <span>votes</span>
             <div class="action">
                 <a href="#"><img src="/img/vote_up.png" alt="Vote Up" /></a>
                 <a href="#"><img src="/img/vote_down.png" alt="Vote Down" /></a>
