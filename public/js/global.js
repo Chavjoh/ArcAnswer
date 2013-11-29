@@ -22,7 +22,7 @@ $( document ).ready(function() {
      */
     $("section#infoBox .close").click(function() {
         $.ajax({
-            url: "http://127.0.0.1/thread/hideInfo",
+            url: "/thread/hideInfo",
             type: 'POST',
             success: function(data){
                 if(data.success) {
