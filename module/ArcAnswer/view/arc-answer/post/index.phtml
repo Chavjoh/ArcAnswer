@@ -1,9 +1,11 @@
 <section id="main">
 
+    <!-- The question -->
+
     <section class="block blue">
-        <h1> <?php echo $this->thread->title ?> </h1>
+        <h1> <?php echo $this->mainPost->thread->title ?> </h1>
         <div class="vote">
-            <?php echo $this->votes ?> <span>votes</span>
+            <?php echo $this->mainPost->total_votes ?> <span>votes</span>
             <div class="action">
                 <a href="#"><img src="/img/vote_up.png" alt="Vote Up" /></a>
                 <a href="#"><img src="/img/vote_down.png" alt="Vote Down" /></a>
@@ -12,22 +14,46 @@
         <div class="message">
             <div class="information">
                 <div class="author">
-                    Post&eacute; par <span><?php echo $thread->mainPost->user->nickname ?></span>
-                    le <?php echo $thread->mainPost->date->format('d.m.Y \&\a\g\r\a\v\e; H:i:s') ?>
+                    Post&eacute; par <span><?php echo $this->mainPost->user->nickname ?></span>
+                    le <?php echo $this->mainPost->date->format('d.m.Y \&\a\g\r\a\v\e; H:i:s') ?>
                 </div>
                 <div class="tag">
-                    <?php foreach($this->thread->tags as $tag) { ?>
+                    <?php foreach($this->mainPost->thread->tags as $tag) { ?>
                         <span><?php echo $tag->name ?></span>
                     <?php } ?>
                 </div>
             </div>
             <div class="content">
-                <?php echo $this->thread->mainPost->content; ?>
+                <?php echo $this->mainPost->content; ?>
             </div>
         </div>
         <hr class="clear" />
     </section>
 
+    <!-- The answers -->
+    <?php foreach($this->posts as $post) { ?>
+        <section class="block grey">
+            <div class="vote">
+                <?php echo $post->total_votes ? $post->total_votes : 0  ?> <span>votes</span>
+                <div class="action">
+                    <a href="#"><img src="/img/vote_up.png" alt="Vote Up" /></a>
+                    <a href="#"><img src="/img/vote_down.png" alt="Vote Down" /></a>
+                </div>
+            </div>
+            <div class="message">
+                <div class="information">
+                    <div class="author">
+                        Post&eacute; par <span><?php echo $post->user->nickname ?></span>
+                        le <?php echo $post->date->format('d.m.Y \&\a\g\r\a\v\e; H:i:s') ?>
+                    </div>
+                </div>
+                <div class="content">
+                    <?php echo $post->content; ?>
+                </div>
+            </div>
+            <hr class="clear" />
+        </section>
+    <?php } ?>
 
 
 

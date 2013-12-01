@@ -23,15 +23,27 @@ class PostController extends AbstractActionController
 	public function indexAction()
 	{
         $threadid = (int) $this->params()->fromRoute('threadid', 0);
-        $thread = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Thread')->find($threadid);
+        $posts = $this->getEntityManager()->getRepository('ArcAnswer\Entity\PostVoteView')->findBy(array('thread' => $threadid));
 
-        $query = $this->getEntityManager()->createQuery('SELECT SUM(v.value) as total FROM ArcAnswer\Entity\Vote v WHERE v.id_post = :id_post');
-        $query->setParameter('id_post', $thread->mainPost->id);
-        $votes = $query->getResult();
+        // TODO remplace the foreach by something like : $keyMain = array_search(array('id' => $posts[0]->thread->mainPost->id), $posts);
 
-		return array(
-			'thread' => $thread,
-            'votes' => $votes[0]['total'],
+        $keyMain = -1;
+        $needle = $posts[0]->thread->mainPost->id;
+        foreach($posts as $key=>$post)
+        {
+            $currentKey = $key;
+            if( $needle == $post->id)
+            {
+                $keyMain = $currentKey;
+            }
+        }
+
+        $mainPost = $posts[$keyMain];
+        unset($posts[$keyMain]);
+
+        return array(
+            'posts' => $posts,
+            'mainPost' => $mainPost,
 		);
 	}
 
