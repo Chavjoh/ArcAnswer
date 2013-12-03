@@ -2,14 +2,24 @@
 	<li>Controller : Thread</li>
 	<li>Action : Index</li>
 	<li>Search : <?php echo $this->search; ?></li>
+	<li>Logged user : <?php echo $this->username; ?></li>
 </ul>
+<?php if ($this->username === '&lt;aucun&gt;') { ?>
+	<form action="/user/login" method="post">
+		Login : <input type="text" name="login" style="border:1px solid red" /><br />
+		Password : <input type="password" name="password" style="border:1px solid red" /><br />
+		<input type="submit" value="Connexion" />
+	</form>
+<?php } else { ?>
+	<a href="/user/logout">Déconnexion</a>
+<?php } ?>
 
 <section id="main">
 	<?php if ($this->infoBoxVisibility == 'show')
 		echo $this->partial('layout/infoBox', array()); ?>
 
 	<section class="half float-left">
-		<div class="center"> <img src="./img/fine.png" alt="Fine" /> </div>
+		<div class="center"> <img src="<?php echo $this->basePath('img/fine.png'); ?>" alt="Fine" /> </div>
 
 		<?php foreach($this->threads as $thread) { ?>
 			<a class="thread block green" href="#<?php echo $thread->id ?>">
@@ -31,7 +41,7 @@
 		<?php } ?>
 	</section>
 	<section class="half float-left">
-		<div class="center"> <img src="./img/panic.png" alt="Panic" /> </div>
+		<div class="center"> <img src="<?php echo $this->basePath('img/panic.png'); ?>" alt="Panic" /> </div>
 		<a class="block red" href="#">
 			<h1> Une question ? </h1>
 			Block
