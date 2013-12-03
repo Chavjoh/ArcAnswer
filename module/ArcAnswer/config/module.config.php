@@ -182,6 +182,15 @@ return array(
 					'ArcAnswer\Entity' =>'ArcAnswer_driver'
 				)
 			),
-		)
+		),
+		'authentication' => array(
+			'orm_default' => array(
+				'objectManager' => 'Doctrine\ORM\EntityManager',
+				'identityClass' => 'ArcAnswer\Entity\User',
+				'identityProperty' => 'login',
+				'credentialProperty' => 'password',
+				'credentialCallable' => 'ArcAnswer\Entity\User::testPassword',
+			),
+		),
 	),
 );

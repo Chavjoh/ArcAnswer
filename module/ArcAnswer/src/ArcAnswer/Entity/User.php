@@ -52,7 +52,27 @@ class User implements InputFilterAwareInterface
 
 	public function __set($property, $value)
 	{
+		if ($property === 'password')
+		{
+			$value = self::hashPassword($value);
+		}
 		$this->$property = $value;
+	}
+
+	public function setClearPassword($clearPassword)
+	{
+		$this->password = self::hashPassword($clearPassword);
+		return $this;
+	}
+
+	public static function hashPassword($clearPassword)
+	{
+		return sha1($clearPassword);
+	}
+
+	public static function testPassword($player, $clearPassword)
+	{
+		return self::hashPassword($clearPassword) === $player->password;
 	}
 
 	public function getInputFilter()

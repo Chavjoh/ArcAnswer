@@ -34,10 +34,20 @@ class ThreadController extends AbstractActionController
 	public function indexAction()
 	{
 		$resultSet = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Thread')->findAll();
+		$auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
+		$user = $auth->getIdentity();
+		$flash = $this->flashMessenger();
+		$messages = array();
+		if ($flash->hasMessages())
+		{
+			$messages = $flash->getMessages();
+		}
 		return new ViewModel(array(
 			'search' => $this->params()->fromRoute('search', ''),
 			'threads' => $resultSet,
             'infoBoxVisibility' => $this->infoBoxVisibility(),
+			'username' => ($user == null ? '&lt;aucun&gt;' : $user->nickname),
+			'messages' => $messages,
 		));
 	}
 

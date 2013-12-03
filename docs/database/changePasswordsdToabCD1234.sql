@@ -1,0 +1,1 @@
+UPDATE user SET password_user='cacebf599e5fecfe2188655304da3a241b2bb6d4';

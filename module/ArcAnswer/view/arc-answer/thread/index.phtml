@@ -15,6 +15,11 @@
 <?php } ?>
 
 <section id="main">
+
+	<?php foreach($this->messages as $message) {
+		echo '<a style="color:red">Message : ' . $message . '</a><br />';
+	}?>
+
 	<?php if ($this->infoBoxVisibility == 'show')
 		echo $this->partial('layout/infoBox', array()); ?>
 
