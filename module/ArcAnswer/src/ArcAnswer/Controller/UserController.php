@@ -4,6 +4,7 @@ namespace ArcAnswer\Controller;
 use ArcAnswer\Entity\User;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\Authentication\Result;
 
 class UserController extends AbstractActionController
 {
@@ -38,13 +39,20 @@ class UserController extends AbstractActionController
 			$auth->getAdapter()->setCredentialValue($password);
 			$result = $auth->authenticate();
 		}
-		if ($result)
+		switch ($result->getCode())
 		{
-			$this->flashMessenger()->addMessage('Welcome back, questioner !');
-		}
-		else
-		{
+		case Result::FAILURE_IDENTITY_NOT_FOUND:
 			$this->flashMessenger()->addMessage('Get out of my way, little weak thing...');
+			break;
+		case Result::FAILURE_CREDENTIAL_INVALID:
+			$this->flashMessenger()->addMessage('Ahem... Put your thumb on the scanner again pleaZZARGHBLL');
+			break;
+		case Result::SUCCESS:
+			$this->flashMessenger()->addMessage('Welcome back, questioner !');
+			break;
+		default:
+			$this->flashMessenger()->addMessage('Wa-Wa-Wa-What is the FUCK ?');
+			break;
 		}
 		$this->redirect()->toRoute('thread/index');
 	}
