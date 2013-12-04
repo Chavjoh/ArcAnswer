@@ -2,3 +2,13 @@
 	<li>Controller : User</li>
 	<li>Action : Create</li>
 </ul>
+<?php foreach ($this->messages as $message) {
+	echo '<a style="color:red">Message : ' . $message . '<br/></a>';
+ } ?>
+<form action="/user/create" method="post">
+	nickname : <input type="text" name="nick" value="<?php echo $this->nickname; ?>" style="border:1px solid red" /><br />
+	login : <input type="text" name="login" value="<?php echo $this->login; ?>" style="border:1px solid red" /><br />
+	password : <input type="password" name="pass1" style="border:1px solid red" /><br />
+	repeat : <input type="password" name="pass2" style="border:1px solid red" /><br />
+	<input type="submit" value="create" />
+</form>
