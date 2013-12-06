@@ -1,9 +1,8 @@
 <section id="main">
 
     <!-- The question -->
-
     <section class="block blue">
-        <h1> <?php echo $this->mainPost->thread->title ?> </h1>
+        <h1> <?php echo $this->thread->title ?> </h1>
         <div class="vote">
             <?php echo $this->mainPost->total_votes ?> <span>votes</span>
             <div class="action">
@@ -18,7 +17,7 @@
                     le <?php echo $this->mainPost->date->format('d.m.Y \&\a\g\r\a\v\e; H:i:s') ?>
                 </div>
                 <div class="tag">
-                    <?php foreach($this->mainPost->thread->tags as $tag) { ?>
+                    <?php foreach($this->thread->tags as $tag) { ?>
                         <span><?php echo $tag->name ?></span>
                     <?php } ?>
                 </div>
@@ -29,6 +28,56 @@
         </div>
         <hr class="clear" />
     </section>
+
+    <!-- The selected solution -->
+    <?php if ( $this->solutionPost !== null ) { ?>
+    <section class="block green raised">
+        <div class="vote">
+            <?php echo $this->solutionPost->total_votes ? $this->solutionPost->total_votes : 0  ?> <span>votes</span>
+            <div class="action">
+                <a href="#"><img src="/img/vote_up.png" alt="Vote Up" /></a>
+                <a href="#"><img src="/img/vote_down.png" alt="Vote Down" /></a>
+            </div>
+        </div>
+        <div class="message">
+            <div class="information">
+                <div class="author">
+                    Post&eacute; par <span><?php echo $this->solutionPost->user->nickname ?></span>
+                    le <?php echo $this->solutionPost->date->format('d.m.Y \&\a\g\r\a\v\e; H:i:s') ?>
+                </div>
+            </div>
+            <div class="content">
+                <?php echo $this->solutionPost->content; ?>
+            </div>
+        </div>
+        <hr class="clear" />
+    </section>
+    <?php } ?>
+
+    <!-- The most popular answer -->
+    <?php if ( $this->popularPost !== null ) { ?>
+        <section class="block green best">
+            <div class="vote">
+                <?php echo $this->popularPost->total_votes ? $this->popularPost->total_votes : 0  ?> <span>votes</span>
+                <div class="action">
+                    <a href="#"><img src="/img/vote_up.png" alt="Vote Up" /></a>
+                    <a href="#"><img src="/img/vote_down.png" alt="Vote Down" /></a>
+                </div>
+            </div>
+            <div class="message">
+                <div class="information">
+                    <div class="author">
+                        Post&eacute; par <span><?php echo $this->popularPost->user->nickname ?></span>
+                        le <?php echo $this->popularPost->date->format('d.m.Y \&\a\g\r\a\v\e; H:i:s') ?>
+                    </div>
+                </div>
+                <div class="content">
+                    <?php echo $this->popularPost->content; ?>
+                </div>
+            </div>
+            <hr class="clear" />
+        </section>
+    <?php } ?>
 
     <!-- The answers -->
     <?php foreach($this->posts as $post) { ?>

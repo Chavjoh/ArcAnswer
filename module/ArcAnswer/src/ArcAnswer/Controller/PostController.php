@@ -23,27 +23,51 @@ class PostController extends AbstractActionController
 	public function indexAction()
 	{
         $threadid = (int) $this->params()->fromRoute('threadid', 0);
+        $thread = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Thread')->find($threadid);
+        $mainPost = $this->getEntityManager()->getRepository('ArcAnswer\Entity\PostVoteView')->find($thread->mainPost->id);
+
         $posts = $this->getEntityManager()->getRepository('ArcAnswer\Entity\PostVoteView')->findBy(array('thread' => $threadid));
+        $solutionPost = null;
+        $popularPost = null;
 
-        // TODO remplace the foreach by something like : $keyMain = array_search(array('id' => $posts[0]->thread->mainPost->id), $posts);
-
-        $keyMain = -1;
-        $needle = $posts[0]->thread->mainPost->id;
+        $keySolution = null;
+        $keyPopular = null;
+        $maxVote = $posts[0]->total_votes;
         foreach($posts as $key=>$post)
         {
-            $currentKey = $key;
-            if( $needle == $post->id)
+            if( $post->solution == true)
             {
-                $keyMain = $currentKey;
+                $keySolution = $key;
+            }
+            elseif( $post->id == $mainPost->id )
+            {
+                unset( $posts[$key] );
+            }
+            elseif( $maxVote <= $post->total_votes )
+            {
+                $keyPopular = $key;
+                $maxVote = $posts[$key]->total_votes;
             }
         }
 
-        $mainPost = $posts[$keyMain];
-        unset($posts[$keyMain]);
+
+        if ( $keyPopular !== null )
+        {
+            $popularPost = $posts[$keyPopular];
+            unset( $posts[$keyPopular] );
+        }
+        if ( $keySolution !== null )
+        {
+            $solutionPost = $this->getEntityManager()->getRepository('ArcAnswer\Entity\PostVoteView')->find( $posts[$keySolution]->id );
+            unset( $posts[$keySolution] );
+        }
 
         return array(
+            'thread' => $thread,
             'posts' => $posts,
             'mainPost' => $mainPost,
+            'solutionPost' => $solutionPost,
+            'popularPost' => $popularPost,
 		);
 	}
 
