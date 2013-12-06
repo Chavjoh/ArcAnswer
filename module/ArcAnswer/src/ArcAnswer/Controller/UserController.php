@@ -33,9 +33,11 @@ class UserController extends AbstractActionController
 		{
 			return $this->redirect()->toRoute('thread/index', array());
 		}
+		$messages = $this->flashMessenger()->getMessages();
 		return array(
 			'login' => $user->login,
 			'nickname' => $user->nickname,
+			'messages' => $messages,
 		);
 	}
 
@@ -123,15 +125,80 @@ class UserController extends AbstractActionController
 		}
 		else
 		{
-			$this->redirect()->toRoute('thread/index', array());
+			return $this->redirect()->toRoute('thread/index', array());
 		}
 	}
 
 	public function updateAction()
 	{
-		return array(
-			'id' => (int) $this->params()->fromRoute('id', 0),
-		);
+		$auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
+		$user = $auth->getIdentity();
+		if ($user == null)
+		{
+			return $this->redirect()->toRoute('thread/index', array());
+		}
+		if ($this->request->isPost())
+		{
+			$nickname = $this->params()->fromPost('nick');
+			$login = $this->params()->fromPost('login');
+			$password = $this->params()->fromPost('pass1');
+			$control = $this->params()->fromPost('pass2');
+			if (!($password === $control))
+			{
+				$this->flashMessenger()->addMessage('Both password do not match');
+			}
+			else
+			{
+				$filter = $user->getInputFilter();
+				$data = array(
+					'login' => $login,
+					'password' => $password,
+					'nickname' => $nickname,
+				);
+				if ($password === '')
+				{
+					$filter->remove('password');
+					unset($data['password']);
+				}
+				if ($filter->setData($data)->setValidationGroup(InputFilterInterface::VALIDATE_ALL)->isValid())
+				{
+					$user->login = $filter->getValue('login');
+					$user->nickname = $filter->getValue('nickname');
+					if (!($password === ''))
+					{
+						$user->password = $filter->getValue('password');
+					}
+					$this->getEntityManager()->persist($user);
+					$this->getEntityManager()->flush();
+					$this->flashMessenger()->addMessage('Your account has been updated');
+					if (!($password === ''))
+					{
+						$this->flashMessenger()->addMessage('Your password has been changed');
+					}
+				}
+				else
+				{
+					foreach ($filter->getMessages() as $message)
+					{
+						foreach ($message as $key=>$val)
+						{
+							$this->flashMessenger()->addMessage($val);
+						}
+					}
+				}
+			}
+			return $this->redirect()->toRoute('user', array(
+				'controller' => 'user',
+				'action' => 'index',
+			));
+		}
+		else
+		{
+			return array(
+				'login' => $user->login,
+				'nickname' => $user->nickname,
+			);
+		}
 	}
 
 	public function loginAction()
