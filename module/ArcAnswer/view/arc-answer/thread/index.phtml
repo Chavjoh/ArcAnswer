@@ -29,7 +29,7 @@
 		<?php foreach($this->threads as $thread) { ?>
 			<a class="thread block green" href="#<?php echo $thread->id ?>">
 				<h1> <?php echo $thread->title ?> </h1>
-				<div class="vote">XXX <span>votes</span></div>
+				<div class="vote"><?php echo $thread->mainPost->getVoteSum() ?> <span>votes</span></div>
 				<div class="information">
 					<div class="author">
 						Post&eacute; par <span><?php echo $thread->mainPost->user->nickname ?></span>

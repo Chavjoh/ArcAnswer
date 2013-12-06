@@ -56,6 +56,11 @@ class Post implements InputFilterAwareInterface
 	 */
 	protected $thread;
 
+	/**
+	 * @ORM\OneToMany(targetEntity="Vote", mappedBy="id_post")
+	 */
+	private $vote;
+
 	public function __construct()
 	{
 		$this->posts = new ArrayCollection();
@@ -69,6 +74,18 @@ class Post implements InputFilterAwareInterface
 	public function __set($property, $value)
 	{
 		$this->$property = $value;
+	}
+
+	public function getVoteSum()
+	{
+		$sum = 0;
+
+		foreach ($this->vote AS $entry)
+		{
+			$sum += $entry->value;
+		}
+
+		return $sum;
 	}
 
 	public function getInputFilter()
