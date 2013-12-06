@@ -69,9 +69,12 @@ class UserController extends AbstractActionController
 					$this->getEntityManager()->persist($user);
 					$this->getEntityManager()->flush();
 					$this->flashMessenger()->addMessage('Welcome in our clan !');
-					// TODO : login automatique
-					$this->redirect()->toRoute('thread/index', array());
-					return;
+					$this->request->setMethod('GET');
+					return $this->forward()->dispatch('ArcAnswer\Controller\User', array(
+						'action' => 'login',
+						'login' => $filter->getValue('login'),
+						'password' => $filter->getValue('password'),
+					));
 				}
 				else
 				{
@@ -126,30 +129,39 @@ class UserController extends AbstractActionController
 
 	public function loginAction()
 	{
-		$result = 0;
+		$login = '';
+		$password = '';
 		if ($this->request->isPost())
 		{
 			$login = $this->params()->fromPost('login');
 			$password = $this->params()->fromPost('password');
-			$auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
-			$auth->getAdapter()->setIdentityValue($login);
-			$auth->getAdapter()->setCredentialValue($password);
-			$result = $auth->authenticate();
 		}
-		switch ($result->getCode())
+		else
 		{
-		case Result::FAILURE_IDENTITY_NOT_FOUND:
-			$this->flashMessenger()->addMessage('Get out of my way, little weak thing...');
-			break;
-		case Result::FAILURE_CREDENTIAL_INVALID:
-			$this->flashMessenger()->addMessage('Ahem... Put your thumb on the scanner again pleaZZARGHBLL');
-			break;
-		case Result::SUCCESS:
-			$this->flashMessenger()->addMessage('Welcome back, questioner !');
-			break;
-		default:
-			$this->flashMessenger()->addMessage('Wa-Wa-Wa-What is the FUCK ?');
-			break;
+			$login = $this->params()->fromRoute('login');
+			$password = $this->params()->fromRoute('password');
+		}
+		$auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
+		$auth->getAdapter()->setIdentityValue($login);
+		$auth->getAdapter()->setCredentialValue($password);
+		$result = $auth->authenticate();
+		if ($this->request->isPost())
+		{
+			switch ($result->getCode())
+			{
+			case Result::FAILURE_IDENTITY_NOT_FOUND:
+				$this->flashMessenger()->addMessage('Get out of my way, little weak thing...');
+				break;
+			case Result::FAILURE_CREDENTIAL_INVALID:
+				$this->flashMessenger()->addMessage('Ahem... Put your thumb on the scanner again pleaZZARGHBLL');
+				break;
+			case Result::SUCCESS:
+				$this->flashMessenger()->addMessage('Welcome back, questioner !');
+				break;
+			default:
+				$this->flashMessenger()->addMessage('Wa-Wa-Wa-What is the FUCK ?');
+				break;
+			}
 		}
 		$this->redirect()->toRoute('thread/index', array());
 	}
