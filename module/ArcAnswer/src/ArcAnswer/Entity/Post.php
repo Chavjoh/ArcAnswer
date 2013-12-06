@@ -22,6 +22,9 @@ class Post implements InputFilterAwareInterface
 {
 	protected $inputFilter;
 
+	// Cache for sum of votes
+	protected $voteSum = null;
+
 	/**
 	 * @ORM\Id
 	 * @ORM\Column(type="integer", name="id_post")
@@ -68,6 +71,12 @@ class Post implements InputFilterAwareInterface
 
 	public function __get($property)
 	{
+		if ($property == "voteSum")
+		{
+			if ($this->voteSum == null)
+				$this->voteSum = $this->getVoteSum();
+		}
+
 		return $this->$property;
 	}
 

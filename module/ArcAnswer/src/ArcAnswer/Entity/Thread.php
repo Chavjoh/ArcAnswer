@@ -22,6 +22,9 @@ class Thread implements InputFilterAwareInterface
 {
 	protected $inputFilter;
 
+	// Cache indication if thread has solution
+	protected $hasSolution = null;
+
 	/**
 	 * @ORM\Id
 	 * @ORM\Column(type="integer", name="id_thread")
@@ -62,7 +65,24 @@ class Thread implements InputFilterAwareInterface
 
 	public function __get($property)
 	{
+		if ($property == "hasSolution")
+		{
+			if ($this->hasSolution == null)
+				$this->hasSolution = $this->hasSolution();
+		}
+
 		return $this->$property;
+	}
+
+	public function hasSolution()
+	{
+		foreach ($this->posts AS $entry)
+		{
+			if ($entry->solution)
+				return true;
+		}
+
+		return false;
 	}
 
 	public function __set($property, $value)
