@@ -22,6 +22,14 @@ class ThreadController extends AbstractActionController
 	 */
 	protected $em;
 
+	public static function sortByVote(Thread $a, Thread $b)
+	{
+		$sumA = $a->mainPost->voteSum;
+		$sumB = $b->mainPost->voteSum;
+
+		return ($sumA == $sumB) ? 0 : (($sumA < $sumB) ? 1 : -1);
+	}
+
 	protected function getEntityManager()
 	{
 		if (null === $this->em)
@@ -33,7 +41,31 @@ class ThreadController extends AbstractActionController
 
 	public function indexAction()
 	{
+		/*
+		 * TRY WITH QUERY
+		 *
+		$query = $this->getEntityManager()->createQuery("SELECT t FROM ArcAnswer\Entity\Thread t JOIN t.id_post_thread p ORDER BY p.getVoteSum() ASC");
+		$resultSet = $query->getResult();
+		*/
+
+		/*
+		 * TRY WITH QUERY BUILDER
+		 *
+		$qb = $this->getEntityManager()->createQueryBuilder();
+		$qb->select('t');
+		$qb->from('ArcAnswer\Entity\Thread', 't');
+		$qb->innerJoin('t.mainPost', 'p');
+		$qb->orderBy('p.voteSum', 'DESC');
+		$resultSet = $qb->getQuery()->getResult();
+		*/
+
 		$resultSet = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Thread')->findAll();
+
+		/*
+		 * ORDER BY SPECIFIC FUNCTION
+		 */
+		usort($resultSet, array('ArcAnswer\Controller\ThreadController', 'sortByVote'));
+		
 		$auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
 		$user = $auth->getIdentity();
 		$flash = $this->flashMessenger();

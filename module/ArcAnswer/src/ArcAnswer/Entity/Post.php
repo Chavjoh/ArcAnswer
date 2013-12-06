@@ -21,6 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Post implements InputFilterAwareInterface
 {
 	protected $inputFilter;
+	protected $voteSum = null;
 
 	/**
 	 * @ORM\Id
@@ -68,6 +69,12 @@ class Post implements InputFilterAwareInterface
 
 	public function __get($property)
 	{
+		if ($property == "voteSum")
+		{
+			if ($this->voteSum == null)
+				$this->voteSum = $this->getVoteSum();
+		}
+
 		return $this->$property;
 	}
 
