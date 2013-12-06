@@ -59,13 +59,13 @@ class ThreadController extends AbstractActionController
 		$resultSet = $qb->getQuery()->getResult();
 		*/
 
-		$resultSet = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Thread')->findAll();
+		$threadResolved = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Thread')->findAll();
 
 		/*
 		 * ORDER BY SPECIFIC FUNCTION
 		 */
-		usort($resultSet, array('ArcAnswer\Controller\ThreadController', 'sortByVote'));
-		
+		usort($threadResolved, array('ArcAnswer\Controller\ThreadController', 'sortByVote'));
+
 		$auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
 		$user = $auth->getIdentity();
 		$flash = $this->flashMessenger();
@@ -76,7 +76,7 @@ class ThreadController extends AbstractActionController
 		}
 		return new ViewModel(array(
 			'search' => $this->params()->fromRoute('search', ''),
-			'threads' => $resultSet,
+			'threads' => $threadResolved,
             'infoBoxVisibility' => $this->infoBoxVisibility(),
 			'username' => ($user == null ? '&lt;aucun&gt;' : $user->nickname),
 			'messages' => $messages,

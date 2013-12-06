@@ -21,6 +21,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Post implements InputFilterAwareInterface
 {
 	protected $inputFilter;
+
+	// Cache for sum of votes
 	protected $voteSum = null;
 
 	/**
