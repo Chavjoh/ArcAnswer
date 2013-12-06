@@ -6,10 +6,24 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\Result;
 use Zend\Session\Container;
+use Zend\InputFilter\InputFilterInterface;
 
 class UserController extends AbstractActionController
 {
 	const SESSION_FORM = 'formcreateuser';
+	/**
+ 	 * @var \Doctrine\ORM\EntityManager
+ 	 */
+	protected $em;
+
+	protected function getEntityManager()
+	{
+		if (null === $this->em)
+		{
+			$this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+		}
+		return $this->em;
+	}
 
 	public function indexAction()
 	{
@@ -21,8 +35,7 @@ class UserController extends AbstractActionController
 	public function createAction()
 	{
 		$auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
-		$user = $auth->getIdentity();
-		if ($user == null)
+		if ($auth->getIdentity() == null)
 		{
 			if ($this->request->isPost())
 			{
@@ -42,8 +55,42 @@ class UserController extends AbstractActionController
 					));
 					return;
 				}
-				// TODO : register in database
-				$this->redirect()->toRoute('thread/index', array());
+				$user = new User();
+				$filter = $user->getInputFilter();
+				if ($filter->setData(array(
+					'login' => $login,
+					'password' => $password,
+					'nickname' => $nickname,
+				))->setValidationGroup(InputFilterInterface::VALIDATE_ALL)->isValid())
+				{
+					$user->login = $filter->getValue('login');
+					$user->password = $filter->getValue('password');
+					$user->nickname = $filter->getValue('nickname');
+					$this->getEntityManager()->persist($user);
+					$this->getEntityManager()->flush();
+					$this->flashMessenger()->addMessage('Welcome in our clan !');
+					// TODO : login automatique
+					$this->redirect()->toRoute('thread/index', array());
+					return;
+				}
+				else
+				{
+					foreach ($filter->getMessages() as $message)
+					{
+						foreach ($message as $key=>$val)
+						{
+							$this->flashMessenger()->addMessage($val);
+						}
+					}
+					$session = new Container(self::SESSION_FORM);
+					$session->offsetSet('nickname', $nickname);
+					$session->offsetSet('login', $login);
+					$this->redirect()->toRoute('user', array(
+						'controller' => 'user',
+						'action' => 'create',
+					));
+					return;
+				}
 			}
 			else
 			{

@@ -81,6 +81,48 @@ class User implements InputFilterAwareInterface
 		{
 			$inputFilter = new InputFilter();
 			$factory = new InputFactory();
+			$inputFilter->add($factory->createInput(array(
+				'name' => 'login',
+				'required' => true,
+				'validators' => array(
+					array(
+						'name' => 'NotEmpty',
+						'options' => array(
+							'messages' => array(
+								\Zend\Validator\NotEmpty::IS_EMPTY => 'Don\'t you want to fill in a login ?',
+							),
+						),
+					),
+				),
+			)));
+			$inputFilter->add($factory->createInput(array(
+				'name' => 'password',
+				'required' => true,
+				'validators' => array(
+					array(
+						'name' => 'NotEmpty',
+						'options' => array(
+							'messages' => array(
+								\Zend\Validator\NotEmpty::IS_EMPTY => 'Don\'t you want to fill in a password ?',
+							),
+						),
+					),
+				),
+			)));
+			$inputFilter->add($factory->createInput(array(
+				'name' => 'nickname',
+				'required' => true,
+				'validators' => array(
+					array(
+						'name' => 'NotEmpty',
+						'options' => array(
+							'messages' => array(
+								\Zend\Validator\NotEmpty::IS_EMPTY => 'Don\'t you want to fill in a nickname ?',
+							),
+						),
+					),
+				),
+			)));
 			$this->inputFilter = $inputFilter;
 		}
 		return $this->inputFilter;
