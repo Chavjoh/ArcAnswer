@@ -30,6 +30,26 @@ class ThreadController extends AbstractActionController
 		return ($sumA == $sumB) ? 0 : (($sumA < $sumB) ? 1 : -1);
 	}
 
+	public static function dispatchThreadList($threadList)
+	{
+		$arraySolved = array();
+		$arrayUnsolved = array();
+
+		foreach ($threadList AS $thread)
+		{
+			if ($thread->hasSolution)
+			{
+				$arraySolved[] = $thread;
+			}
+			else
+			{
+				$arrayUnsolved[] = $thread;
+			}
+		}
+
+		return array($arraySolved, $arrayUnsolved);
+	}
+
 	protected function getEntityManager()
 	{
 		if (null === $this->em)
@@ -59,12 +79,17 @@ class ThreadController extends AbstractActionController
 		$resultSet = $qb->getQuery()->getResult();
 		*/
 
-		$threadResolved = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Thread')->findAll();
+		$threadList = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Thread')->findAll();
 
 		/*
 		 * ORDER BY SPECIFIC FUNCTION
 		 */
-		usort($threadResolved, array('ArcAnswer\Controller\ThreadController', 'sortByVote'));
+		usort($threadList, array('ArcAnswer\Controller\ThreadController', 'sortByVote'));
+
+		/*
+		 * KEEP ONLY SOLVED OR UNSOLVED THREAD
+		 */
+		list($arraySolved, $arrayUnsolved) = $this->dispatchThreadList($threadList);
 
 		$auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
 		$user = $auth->getIdentity();
@@ -74,9 +99,11 @@ class ThreadController extends AbstractActionController
 		{
 			$messages = $flash->getMessages();
 		}
+
 		return new ViewModel(array(
 			'search' => $this->params()->fromRoute('search', ''),
-			'threads' => $threadResolved,
+			'threadListSolved' => $arraySolved,
+			'threadListUnsolved' => $arrayUnsolved,
             'infoBoxVisibility' => $this->infoBoxVisibility(),
 			'username' => ($user == null ? '&lt;aucun&gt;' : $user->nickname),
 			'messages' => $messages,
