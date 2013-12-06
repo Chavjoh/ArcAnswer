@@ -27,8 +27,15 @@ class UserController extends AbstractActionController
 
 	public function indexAction()
 	{
+		$auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
+		$user = $auth->getIdentity();
+		if ($user == null)
+		{
+			return $this->redirect()->toRoute('thread/index', array());
+		}
 		return array(
-			'id' => (int) $this->params()->fromRoute('id', 0),
+			'login' => $user->login,
+			'nickname' => $user->nickname,
 		);
 	}
 
