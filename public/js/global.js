@@ -32,3 +32,21 @@ $( document ).ready(function() {
         });
     });
 });
+
+function vote_click(post_id, value) {
+    $("#vote_" + post_id + " .action").remove();
+
+    $.ajax({
+        url: "/post/vote/"+post_id+"/"+value,
+        type: 'POST',
+        success: function(data){
+            console.log("success: " + data.success);
+            if(data.success) {
+                var htmlCount =  $("#vote_" + post_id + " .count");
+                var count = parseInt(htmlCount.html());
+                count += value;
+                htmlCount.html(function(){return count;});
+            }
+        }
+    });
+}

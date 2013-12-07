@@ -32,7 +32,7 @@ class Vote implements InputFilterAwareInterface
     /**
      * @ORM\Id
      * @ORM\OneToOne(targetEntity="Post")
-     * @ORM\JoinColumn(name="id_post", referencedColumnName="id_post"))
+     * @ORM\JoinColumn(name="id_post", referencedColumnName="id_post")
      */
     protected $id_post;
 
@@ -62,6 +62,35 @@ class Vote implements InputFilterAwareInterface
         {
             $inputFilter = new InputFilter();
             $factory = new InputFactory();
+
+            $inputFilter->add($factory->createInput(array(
+                'name' => 'id_user',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                    ),
+                ),
+            )));
+            $inputFilter->add($factory->createInput(array(
+                'name' => 'id_post',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                    ),
+                ),
+            )));
+            $inputFilter->add($factory->createInput(array(
+                'name' => 'vote',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                    ),
+                ),
+            )));
+
             $this->inputFilter = $inputFilter;
         }
         return $this->inputFilter;

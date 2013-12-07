@@ -3,12 +3,18 @@
     <!-- The question -->
     <section class="block blue">
         <h1> <?php echo $this->thread->title ?> </h1>
-        <div class="vote">
-            <?php echo $this->mainPost->total_votes ?> <span>votes</span>
-            <div class="action">
-                <a href="#"><img src="/img/vote_up.png" alt="Vote Up" /></a>
-                <a href="#"><img src="/img/vote_down.png" alt="Vote Down" /></a>
-            </div>
+        <div class="vote" id="vote_<?php echo $this->mainPost->id ?>" >
+            <span class="count"><?php echo $this->mainPost->total_votes ?></span> <span class="legend">votes</span>
+            <?php if( $this->user !== null ) { ?>
+                <div class="action">
+                    <a href="#" onclick="vote_click( <?php echo $this->mainPost->id ?> , <?php echo $this->up_val ?> )">
+                        <img src="/img/vote_up.png" alt="Vote Up" />
+                    </a>
+                    <a href="#" onclick="vote_click( <?php echo $this->mainPost->id ?> , <?php echo $this->down_val ?> )">
+                        <img src="/img/vote_down.png" alt="Vote Down" />
+                    </a>
+                </div>
+            <?php } ?>
         </div>
         <div class="message">
             <div class="information">
@@ -34,10 +40,12 @@
     <section class="block green raised">
         <div class="vote">
             <?php echo $this->solutionPost->total_votes ? $this->solutionPost->total_votes : 0  ?> <span>votes</span>
-            <div class="action">
-                <a href="#"><img src="/img/vote_up.png" alt="Vote Up" /></a>
-                <a href="#"><img src="/img/vote_down.png" alt="Vote Down" /></a>
-            </div>
+            <?php if( $this->user !== null ) { ?>
+                <div class="action">
+                    <a href="#"><img src="/img/vote_up.png" alt="Vote Up" /></a>
+                    <a href="#"><img src="/img/vote_down.png" alt="Vote Down" /></a>
+                </div>
+            <?php } ?>
         </div>
         <div class="message">
             <div class="information">
@@ -59,10 +67,12 @@
         <section class="block green best">
             <div class="vote">
                 <?php echo $this->popularPost->total_votes ? $this->popularPost->total_votes : 0  ?> <span>votes</span>
-                <div class="action">
-                    <a href="#"><img src="/img/vote_up.png" alt="Vote Up" /></a>
-                    <a href="#"><img src="/img/vote_down.png" alt="Vote Down" /></a>
-                </div>
+                <?php if( $this->user !== null ) { ?>
+                    <div class="action">
+                        <a href="#"><img src="/img/vote_up.png" alt="Vote Up" /></a>
+                        <a href="#"><img src="/img/vote_down.png" alt="Vote Down" /></a>
+                    </div>
+                <?php } ?>
             </div>
             <div class="message">
                 <div class="information">
@@ -84,10 +94,12 @@
         <section class="block grey">
             <div class="vote">
                 <?php echo $post->total_votes ? $post->total_votes : 0  ?> <span>votes</span>
-                <div class="action">
-                    <a href="#"><img src="/img/vote_up.png" alt="Vote Up" /></a>
-                    <a href="#"><img src="/img/vote_down.png" alt="Vote Down" /></a>
-                </div>
+                <?php if( $this->user !== null ) { ?>
+                    <div class="action">
+                        <a href="#"><img src="/img/vote_up.png" alt="Vote Up" /></a>
+                        <a href="#"><img src="/img/vote_down.png" alt="Vote Down" /></a>
+                    </div>
+                <?php } ?>
             </div>
             <div class="message">
                 <div class="information">

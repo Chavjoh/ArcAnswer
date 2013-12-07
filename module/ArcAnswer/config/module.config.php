@@ -133,7 +133,7 @@ return array(
 							'route' => '/vote/:postid/:val',
 							'constraints' => array(
 								'postid' => '[0-9]+',
-								'val' => '[01]',
+								'val' => '-?1',
 							),
 							'defaults' => array(
 								'action' => 'vote',
