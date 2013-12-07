@@ -12,16 +12,15 @@ return array(
 		'routes' => array(
 
 			// Route to User controller
-			// /user/index/17 => infos de l'utilisateur 17
-			// /user/create => création d'un nouveau
-			// /user/update/17 => modification de l'utilisateur 17
+			// /user/index => infos de l'utilisateur courant
+			// /user/create => création d'un nouvel utilisateur
+			// /user/update => modification de l'utilisateur courant
 			'user' => array(
 				'type' => 'segment',
 				'options' => array(
-					'route' => '/user/:action[/:id]',
+					'route' => '/user/:action',
 					'constraints' => array(
 						'action' => '[a-zA-Z]+',
-						'id' => '[0-9]+',
 					),
 					'defaults' => array(
 						'controller' => 'ArcAnswer\Controller\User',
