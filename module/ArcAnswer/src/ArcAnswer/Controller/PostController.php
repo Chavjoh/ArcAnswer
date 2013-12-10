@@ -6,6 +6,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use Zend\InputFilter\InputFilterInterface;
+use Zend\Controller\Action\Exception;
 
 class PostController extends AbstractActionController
 {
@@ -37,57 +38,58 @@ class PostController extends AbstractActionController
     {
         $threadid = (int) $this->params()->fromRoute('threadid', 0);
         $thread = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Thread')->find($threadid);
-        $mainPost = $this->getEntityManager()->getRepository('ArcAnswer\Entity\PostVoteView')->find($thread->mainPost->id);
-
-        $posts = $this->getEntityManager()->getRepository('ArcAnswer\Entity\PostVoteView')->findBy(array('thread' => $threadid));
-        $solutionPost = null;
-        $popularPost = null;
-
-        $keySolution = null;
-        $keyPopular = null;
-        $maxVote = $posts[0]->total_votes;
-        foreach($posts as $key=>$post)
+        if ( $thread === null )
         {
-            if( $post->solution == true)
-            {
-                $keySolution = $key;
-            }
-            elseif( $post->id == $mainPost->id )
-            {
-                unset( $posts[$key] );
-            }
-            elseif( $maxVote <= $post->total_votes )
-            {
-                $keyPopular = $key;
-                $maxVote = $posts[$key]->total_votes;
-            }
+            $this->getResponse()->setStatusCode(404);
+            return;
         }
 
-
-        if ( $keyPopular !== null )
-        {
-            $popularPost = $posts[$keyPopular];
-            unset( $posts[$keyPopular] );
-        }
-        if ( $keySolution !== null )
-        {
-            $solutionPost = $this->getEntityManager()->getRepository('ArcAnswer\Entity\PostVoteView')->find( $posts[$keySolution]->id );
-            unset( $posts[$keySolution] );
-        }
 
 
         $auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
         $user = $auth->getIdentity();
 
+        $posts = $this->getEntityManager()->getRepository('ArcAnswer\Entity\PostVoteView')->findBy(array('thread' => $threadid));
+        $votes = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Vote')->findBy(array('id_user' => $user->id));
+
+        $specialPostMap = array();
+        $standardPostMap = array();
+        $votedPostId = array();
+
+        foreach( $votes as $vote )
+        {
+            $votedPostId[] = $vote->id_post->id;
+        }
+
+        $maxVote = $posts[0]->total_votes;
+        foreach($posts as $post)
+        {
+            if( $post->solution == true)
+            {
+                $specialPostMap['solution'] = array( $post, !in_array( $post->id, $votedPostId ) );
+            }
+            elseif( $post->id == $thread->mainPost->id )
+            {
+                $specialPostMap['question'] = array( $post, !in_array( $post->id, $votedPostId ) );
+            }
+            elseif( $maxVote <= $post->total_votes )
+            {
+                $maxVote = $post->total_votes;
+                $specialPostMap['popular'] = array( $post, !in_array( $post->id, $votedPostId ) );
+            }
+            else
+            {
+                $standardPostMap[$post->id] = array( $post, !in_array( $post->id, $votedPostId ) );
+            }
+        }
+
         return array(
-            'thread' => $thread,
-            'posts' => $posts,
-            'mainPost' => $mainPost,
-            'solutionPost' => $solutionPost,
-            'popularPost' => $popularPost,
             'user' => $user,
+            'thread' => $thread,
             'up_val' => self::UP_VOTE_VALUE,
             'down_val' => self::DOWN_VOTE_VALUE,
+            'spePost' => $specialPostMap,
+            'stdPost' => $standardPostMap,
         );
     }
 
@@ -117,13 +119,17 @@ class PostController extends AbstractActionController
                 'value' => $value,
             ))->setValidationGroup(InputFilterInterface::VALIDATE_ALL)->isValid())
             {
-                $vote->id_user = $filter->getValue('id_user');
-                $vote->id_post = $filter->getValue('id_post');
-                $vote->value = $filter->getValue('value');
-                $this->getEntityManager()->persist($vote);
-                $this->getEntityManager()->flush();
+                if ( is_null( $this->getEntityManager()->getRepository('ArcAnswer\Entity\Vote')->find(array("id_user" => $user->id, "id_post" => $postId)) ) )
+                {
+                    $vote->id_user = $user;
+                    $vote->id_post = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Post')->find($postId);
+                    $vote->value = $filter->getValue('value');
+                    $this->getEntityManager()->persist($vote);
+                    $this->getEntityManager()->flush();
 
-                $response->setVariable("success", true);
+                    $response->setVariable("success", true);
+                }
+
             }
         }
 

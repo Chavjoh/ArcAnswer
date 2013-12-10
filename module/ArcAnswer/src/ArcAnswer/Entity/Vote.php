@@ -13,7 +13,7 @@ use ArcAnswer\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * User Entity.
+ * Vote Entity.
  *
  * @ORM\Entity
  * @ORM\Table(name="vote")
@@ -82,7 +82,7 @@ class Vote implements InputFilterAwareInterface
                 ),
             )));
             $inputFilter->add($factory->createInput(array(
-                'name' => 'vote',
+                'name' => 'value',
                 'required' => true,
                 'validators' => array(
                     array(
