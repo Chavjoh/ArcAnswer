@@ -25,6 +25,11 @@ class PostController extends AbstractActionController
      */
     const DOWN_VOTE_VALUE = -1;
 
+    /**
+     * @var Gray of the left border
+     */
+    const POST_GRAY = 182;
+
     protected function getEntityManager()
     {
         if (null === $this->em)
@@ -92,6 +97,8 @@ class PostController extends AbstractActionController
             'down_val' => self::DOWN_VOTE_VALUE,
             'spePost' => $specialPostMap,
             'stdPost' => $standardPostMap,
+            'gray' => self::POST_GRAY,
+            'max_vote' => $maxVote,
         );
     }
 

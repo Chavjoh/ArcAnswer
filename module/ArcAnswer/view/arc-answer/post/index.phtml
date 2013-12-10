@@ -102,7 +102,7 @@
 
     <!-- The answers -->
     <?php foreach($this->stdPost as $post) { ?>
-        <section class="block grey">
+        <section class="block grey" style="border-left-color: rgba(<?php echo $this->gray ?>, <?php echo $this->gray ?>, <?php echo $this->gray ?>, <?php echo  ( $post[0]->total_votes / $this->max_vote ) ?>);">
             <div class="vote" id="vote_<?php echo $post[0]->id ?>" >
                 <span class="count"><?php echo $post[0]->total_votes ? $post[0]->total_votes : 0?></span>
                 <span class="legend">votes</span>
