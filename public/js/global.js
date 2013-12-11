@@ -15,6 +15,13 @@ $( document ).ready(function() {
 		disable_search: true
 	});
 
+    /*
+     * Switch up and down the comment block
+     */
+    $(".new_comment a").click(function(){
+        $(".new_comment form").slideToggle();
+    });
+
 
     /*
      * Removes the information box in the dom

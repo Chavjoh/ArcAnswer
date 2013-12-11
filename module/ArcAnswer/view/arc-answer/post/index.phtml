@@ -99,7 +99,15 @@
             <hr class="clear" />
         </section>
     <?php } ?>
-
+    <div class="block blue new_comment">
+        <a class="center" >New comment</a>
+        <form action="/thread/create" method="post">
+            Title : <input type="text" name="title" value="" ><br>
+            Question : <textarea name="question" rows="4" cols="60"></textarea><br>
+            Tags : <input type="text" name="tags" value="" ><br>
+            <input type="submit" value="Send">
+        </form>
+    </div>
     <!-- The answers -->
     <?php foreach($this->stdPost as $post) { ?>
         <section class="block grey" style="border-left-color: rgba(<?php echo $this->gray ?>, <?php echo $this->gray ?>, <?php echo $this->gray ?>, <?php echo  ( $post[0]->total_votes / $this->max_vote ) ?>);">

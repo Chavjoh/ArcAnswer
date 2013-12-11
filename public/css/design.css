@@ -191,9 +191,23 @@ hr.clear {
 }
 
 .new_comment {
-	background-color: #52B5DE;
-	color: black;
-	text-shadow: none;
+    background-color: #52B5DE;
+}
+
+.new_comment a {
+    color: black;
+    display:block;
+    text-align:center;
+    text-shadow: none;
+}
+
+.new_comment a:hover {
+    color: white;
+    transition: color 0.5s ease;
+}
+
+.new_comment form {
+    display:none;
 }
 
 .blue {
