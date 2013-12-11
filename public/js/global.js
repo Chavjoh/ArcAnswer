@@ -40,7 +40,6 @@ function vote_click(post_id, value) {
         url: "/post/vote/"+post_id+"/"+value,
         type: 'POST',
         success: function(data){
-            console.log("success: " + data.success);
             if(data.success) {
                 var htmlCount =  $("#vote_" + post_id + " .count");
                 var count = parseInt(htmlCount.html());
