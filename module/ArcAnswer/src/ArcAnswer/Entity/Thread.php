@@ -96,6 +96,22 @@ class Thread implements InputFilterAwareInterface
 		{
 			$inputFilter = new InputFilter();
 			$factory = new InputFactory();
+
+			$inputFilter->add($factory->createInput(array(
+				'name' => 'title',
+				'required' => true,
+				'validators' => array(
+					array(
+						'name' => 'NotEmpty',
+						'options' => array(
+							'messages' => array(
+								\Zend\Validator\NotEmpty::IS_EMPTY => 'Don\'t you want to fill in a title for your question ?',
+							),
+						),
+					),
+				),
+			)));
+
 			$this->inputFilter = $inputFilter;
 		}
 		return $this->inputFilter;
