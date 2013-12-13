@@ -57,16 +57,22 @@ class PostController extends AbstractActionController
         $posts = $this->getEntityManager()->getRepository('ArcAnswer\Entity\PostVoteView')->findBy(array('thread' => $threadid));
         usort($posts, array('ArcAnswer\Entity\PostVoteView', 'sortByVote'));
 
-        $votes = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Vote')->findBy(array('id_user' => $user->id));
-
         $specialPostMap = array();
         $standardPostMap = array();
-        $votedPostId = array();
 
-        foreach( $votes as $vote )
+
+        $votedPostId = array();
+        if( $user!= null )
         {
-            $votedPostId[] = $vote->id_post->id;
+            $votes = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Vote')->findBy(array('id_user' => $user->id));
+
+            foreach( $votes as $vote )
+            {
+                $votedPostId[] = $vote->id_post->id;
+            }
         }
+
+
 
         $maxVote = $posts[0]->total_votes;
         foreach($posts as $post)
