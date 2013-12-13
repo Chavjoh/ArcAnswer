@@ -22,12 +22,15 @@
 <?php if ($this->user == null) { ?>
 	<a style="color:green">Connectez-vous pour poser une question.</a>
 <?php } else { ?>
-	<form action="/thread/create" method="post">
-		Title : <input type="text" name="title" value="<?php echo $this->newTitle; ?>" style="border:1px solid green" /><br />
-		Question : <textarea name="question" style="border:1px solid green; background-color:#151515; color:#52B5DF" rows="4" cols="60"><?php echo $this->newQuestion; ?></textarea><br />
-		Tags : <input type="text" name="tags" value="<?php echo $this->newTags; ?>" style="border:1px solid green" /><br />
-		<input type="submit" value="Send" />
-	</form>
+    <div class="block new_form">
+        <a class="center" >Ask your question !</a>
+        <form action="/thread/create" method="post">
+            <label for="title">Title :</label><input type="text" name="title" value="<?php echo $this->newTitle; ?>" />
+            <label for="question">Question :</label><textarea name="question"  rows="4" cols="60"><?php echo $this->newQuestion; ?></textarea>
+                <label for="tags">Tags :</label><input type="text" name="tags" value="<?php echo $this->newTags; ?>" />
+            <input class="center" type="submit" value="Send" />
+        </form>
+    </div>
 <?php } ?>
 
 <section id="main">
