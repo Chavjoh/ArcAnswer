@@ -92,4 +92,20 @@ class PostVoteView implements InputFilterAwareInterface
     {
         throw new \Exception("Les filtres sont déjà définis directement dans le modèle");
     }
+
+    /**
+     * Comparator for PostVoteView objects by votes
+     * @param PostVoteView $a
+     * @param PostVoteView $b
+     * @return int
+     */
+    public static function sortByVote(PostVoteView $a, PostVoteView $b)
+    {
+        $sumA = $a->total_votes;
+        $sumB = $b->total_votes;
+        $sumA == null ? $sumA = 0 : $sumA ;
+        $sumB == null ? $sumB = 0 : $sumB ;
+
+        return ($sumA == $sumB) ? 0 : (($sumA < $sumB) ? 1 : -1);
+    }
 }

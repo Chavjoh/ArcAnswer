@@ -2,6 +2,9 @@
 	<li>Controller : User</li>
 	<li>Action : Index</li>
 </ul>
+<?php foreach ($this->messages as $message) {
+	echo '<a style="color:red">Message : ' . $message . '<br/></a>';
+} ?>
 Login : <?php echo $this->login; ?><br />
 Nickname : <?php echo $this->nickname; ?><br />
 <a href="/user/update" style="color:red">Modify</a>

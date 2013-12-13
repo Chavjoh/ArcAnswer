@@ -52,6 +52,22 @@ class Tag implements InputFilterAwareInterface
 		{
 			$inputFilter = new InputFilter();
 			$factory = new InputFactory();
+
+			$inputFilter->add($factory->createInput(array(
+				'name' => 'name',
+				'required' => true,
+				'validators' => array(
+					array(
+						'name' => 'NotEmpty',
+						'options' => array(
+							'messages' => array(
+								\Zend\Validator\NotEmpty::IS_EMPTY => 'A tag seems to be empty... STOP IT NOW !',
+							),
+						),
+					),
+				),
+			)));
+
 			$this->inputFilter = $inputFilter;
 		}
 		return $this->inputFilter;

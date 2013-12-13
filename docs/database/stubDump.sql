@@ -3,11 +3,14 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Dim 01 Décembre 2013 à 19:21
+-- Généré le: Mer 11 Décembre 2013 à 11:26
 -- Version du serveur: 5.6.11-log
 -- Version de PHP: 5.3.25
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -15,8 +18,6 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
-
-set foreign_key_checks = 0;
 
 --
 -- Base de données: `arcanswer`
@@ -34,26 +35,21 @@ DROP TABLE IF EXISTS `post`;
 CREATE TABLE IF NOT EXISTS `post` (
   `id_post` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_user_post` int(10) unsigned DEFAULT NULL COMMENT 'Author of the post',
-  `id_thread_post` int(10) unsigned NOT NULL COMMENT 'Thread of the post',
+  `id_thread_post` int(10) unsigned DEFAULT NULL COMMENT 'Thread of the post',
   `content_post` text NOT NULL,
   `date_post` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `solution_post` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_post`),
   KEY `IDX_FK_POST_USER` (`id_user_post`),
   KEY `IDX_FK_POST_THREAD` (`id_thread_post`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
 
---
--- Vider la table avant d'insérer `post`
---
-
-TRUNCATE TABLE `post`;
 --
 -- Contenu de la table `post`
 --
 
-INSERT INTO `post` VALUES
-(1, 1, 1, 'XYValueSeries sunSeries = new XYValueSeries("Sunshine hours");\r\nfor(int i=0; i< v.length; i++)\r\n  sunSeries.add((float)(i+1), maxValue*1.1, v[i]);\r\n\r\nXYSeriesRenderer sunRenderer = new XYSeriesRenderer();\r\nsunRenderer.setColor(Color.BLUE);\r\nsunRenderer.setDisplayChartValues(true);\r\nsetDisplayChartValues show "maxValue*1.1", but I need to see the values (v[i] NOT maxValue*1.1) above circles\r\n\r\nthank you in advance', '2013-11-15 08:18:16', 1),
+INSERT INTO `post` (`id_post`, `id_user_post`, `id_thread_post`, `content_post`, `date_post`, `solution_post`) VALUES
+(1, 1, 1, 'XYValueSeries sunSeries = new XYValueSeries("Sunshine hours");\r\nfor(int i=0; i< v.length; i++)\r\n  sunSeries.add((float)(i+1), maxValue*1.1, v[i]);\r\n\r\nXYSeriesRenderer sunRenderer = new XYSeriesRenderer();\r\nsunRenderer.setColor(Color.BLUE);\r\nsunRenderer.setDisplayChartValues(true);\r\nsetDisplayChartValues show "maxValue*1.1", but I need to see the values (v[i] NOT maxValue*1.1) above circles\r\n\r\nthank you in advance', '2013-11-15 08:18:16', 0),
 (2, 2, 2, 'I''m working on CMS system using AngularJs, The end2end code is humongous and i think it''s not a good way to put all these test cases in one file and run one time.\r\n\r\nNow i''m using karma for runner tool. My question is Can i divide my end2end scenarios file by different component in order to i can run each component individually?\r\n\r\nI tried to do this, i separated all scenarios into different file by different component and add all in ''files'' in karma.e2e.conf.js. Just like below:\r\n\r\n    files: [', '2013-11-15 08:18:16', 0),
 (3, 3, 3, 'I have a problem filtering an array with experimental data - the data is a long array(double). The index of this array is simply time (second) and the values could be negative or positive. The problem is that is sometimes experimental data is quite wrong(( - this is due to to errors in our device. This error values are very different from other array values. For example first 100 seconds values equals to +75 +(small delta value) or - 40 -(small delta value), but then, during 3 second value is +2', '2013-11-15 08:20:32', 0),
 (4, 4, 4, 'I''m trying to use HTML5 SSE in my web application. Whenever data is available, I need to push updates to client browsers.\r\n\r\nI''m using Servlet 3.0 and deploy in JBOSS 7.1.1 final.\r\n\r\npublic void doGetTest(HttpServletRequest request,\r\n                       HttpServletResponse response) throws  IOException {\r\n\r\n    try {\r\n\r\n        response.setContentType("text/event-stream");\r\n        response.setCharacterEncoding("UTF-8");\r\n        response.setStatus(200);\r\n        response.addHeader("Cache-Con', '2013-11-15 08:20:32', 0),
@@ -69,7 +65,7 @@ INSERT INTO `post` VALUES
 (14, 14, 14, 'I want to know if there is any significant gain over performance in Apache if we remove the htaccess files from our code and simply put all the redirect rules(which are currently in htaccess files) directly into the server config?\r\n\r\nI have been through various posts and some say that the performance would be better. I want to know what are the pros and cons of both the approaches.\r\n\r\nI have noted down following, please add your inputs to the list.\r\n\r\nPros:\r\n\r\n1) Performance improvement.\r\n\r\nCons', '2013-11-15 08:32:25', 0),
 (15, 2, 1, 'Hummm good question dear', '2013-12-01 14:40:50', 0),
 (16, 7, 1, 'I know I know I know !!!!', '2013-12-01 14:40:50', 0),
-(19, 11, 1, 'Here is the solution : reload the page ^_^', '2013-12-01 14:42:53', 0);
+(19, 11, 1, 'Here is the solution : reload the page ^_^', '2013-12-01 14:42:53', 1);
 
 -- --------------------------------------------------------
 
@@ -100,11 +96,6 @@ CREATE TABLE IF NOT EXISTS `tag` (
   UNIQUE KEY `IDX_UQ_TAG_NAME` (`name_tag`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=31 ;
 
---
--- Vider la table avant d'insérer `tag`
---
-
-TRUNCATE TABLE `tag`;
 --
 -- Contenu de la table `tag`
 --
@@ -146,11 +137,6 @@ CREATE TABLE IF NOT EXISTS `tag_thread` (
   KEY `IDX_FK_TAGTHREAD_TAG` (`id_tag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Vider la table avant d'insérer `tag_thread`
---
-
-TRUNCATE TABLE `tag_thread`;
 --
 -- Contenu de la table `tag_thread`
 --
@@ -200,13 +186,8 @@ CREATE TABLE IF NOT EXISTS `thread` (
   `title_thread` varchar(250) NOT NULL,
   PRIMARY KEY (`id_thread`),
   KEY `IDX_FK_THREAD_POST` (`id_post_thread`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
---
--- Vider la table avant d'insérer `thread`
---
-
-TRUNCATE TABLE `thread`;
 --
 -- Contenu de la table `thread`
 --
@@ -245,29 +226,24 @@ CREATE TABLE IF NOT EXISTS `user` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
 
 --
--- Vider la table avant d'insérer `user`
---
-
-TRUNCATE TABLE `user`;
---
 -- Contenu de la table `user`
 --
 
 INSERT INTO `user` (`id_user`, `login_user`, `password_user`, `nickname_user`) VALUES
-(1, 'thorin', 'bilbo', 'Thorin Oakenshield'),
-(2, 'balin', 'bilbo', 'Balin'),
-(3, 'bifur', 'bilbo', 'Bifur'),
-(4, 'bofur', 'bilbo', 'Bofur'),
-(5, 'bombur', 'bilbo', 'Bombur'),
-(6, 'dori', 'bilbo', 'Dori'),
-(7, 'dwalin', 'bilbo', 'Dwalin'),
-(8, 'fili', 'bilbo', 'Fili'),
-(9, 'gloin', 'bilbo', 'Gloin'),
-(10, 'kili', 'bilbo', 'Kili'),
-(11, 'nori', 'bilbo', 'Nori'),
-(12, 'oin', 'bilbo', 'Oin'),
-(13, 'ori', 'bilbo', 'Ori'),
-(14, 'elrond', 'dwarfsucks', 'Elrond');
+(1, 'thorin', 'cacebf599e5fecfe2188655304da3a241b2bb6d4', 'Thorin Oakenshield'),
+(2, 'balin', 'cacebf599e5fecfe2188655304da3a241b2bb6d4', 'Balin'),
+(3, 'bifur', 'cacebf599e5fecfe2188655304da3a241b2bb6d4', 'Bifur'),
+(4, 'bofur', 'cacebf599e5fecfe2188655304da3a241b2bb6d4', 'Bofur'),
+(5, 'bombur', 'cacebf599e5fecfe2188655304da3a241b2bb6d4', 'Bombur'),
+(6, 'dori', 'cacebf599e5fecfe2188655304da3a241b2bb6d4', 'Dori'),
+(7, 'dwalin', 'cacebf599e5fecfe2188655304da3a241b2bb6d4', 'Dwalin'),
+(8, 'fili', 'cacebf599e5fecfe2188655304da3a241b2bb6d4', 'Fili'),
+(9, 'gloin', 'cacebf599e5fecfe2188655304da3a241b2bb6d4', 'Gloin'),
+(10, 'kili', 'cacebf599e5fecfe2188655304da3a241b2bb6d4', 'Kili'),
+(11, 'nori', 'cacebf599e5fecfe2188655304da3a241b2bb6d4', 'Nori'),
+(12, 'oin', 'cacebf599e5fecfe2188655304da3a241b2bb6d4', 'Oin'),
+(13, 'ori', 'cacebf599e5fecfe2188655304da3a241b2bb6d4', 'Ori'),
+(14, 'elrond', 'cacebf599e5fecfe2188655304da3a241b2bb6d4', 'Elrond');
 
 -- --------------------------------------------------------
 
@@ -285,11 +261,6 @@ CREATE TABLE IF NOT EXISTS `vote` (
   KEY `IDX_FK_VOTE_USER` (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Vider la table avant d'insérer `vote`
---
-
-TRUNCATE TABLE `vote`;
 --
 -- Contenu de la table `vote`
 --
@@ -459,9 +430,8 @@ ALTER TABLE `thread`
 ALTER TABLE `vote`
   ADD CONSTRAINT `FK_VOTE_POST` FOREIGN KEY (`id_post`) REFERENCES `post` (`id_post`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_VOTE_USER` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;
-  
-
-set foreign_key_checks = 1;
+SET FOREIGN_KEY_CHECKS=1;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
