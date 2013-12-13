@@ -190,23 +190,23 @@ hr.clear {
 	background-repeat: no-repeat;
 }
 
-.new_comment {
+.new_form {
     background-color: #52B5DE;
 }
 
-.new_comment a {
+.new_form a {
     color: black;
     display:block;
     text-align:center;
     text-shadow: none;
 }
 
-.new_comment a:hover {
+.new_form a:hover {
     color: white;
     transition: color 0.5s ease;
 }
 
-.new_comment form {
+.new_form form {
     display:none;
 }
 

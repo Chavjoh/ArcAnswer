@@ -7,6 +7,9 @@ use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\Controller\Action\Exception;
+use Zend\Session\Container;
+use ArcAnswer\Entity\Post;
+
 
 class PostController extends AbstractActionController
 {
@@ -41,6 +44,7 @@ class PostController extends AbstractActionController
 
     public function indexAction()
     {
+        // Gets thread
         $threadid = (int) $this->params()->fromRoute('threadid', 0);
         $thread = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Thread')->find($threadid);
         if ( $thread === null )
@@ -49,18 +53,15 @@ class PostController extends AbstractActionController
             return;
         }
 
-
-
+        // Gets logged user
         $auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
         $user = $auth->getIdentity();
 
+        // Gets posts
         $posts = $this->getEntityManager()->getRepository('ArcAnswer\Entity\PostVoteView')->findBy(array('thread' => $threadid));
         usort($posts, array('ArcAnswer\Entity\PostVoteView', 'sortByVote'));
 
-        $specialPostMap = array();
-        $standardPostMap = array();
-
-
+        // Gets votes
         $votedPostId = array();
         if( $user!= null )
         {
@@ -72,8 +73,9 @@ class PostController extends AbstractActionController
             }
         }
 
-
-
+        // Sorts posts
+        $specialPostMap = array();
+        $standardPostMap = array();
         $maxVote = $posts[0]->total_votes;
         foreach($posts as $post)
         {
@@ -110,9 +112,37 @@ class PostController extends AbstractActionController
 
     public function createAction()
     {
-        return array(
-            'threadid' => (int) $this->params()->fromRoute('threadid', 0),
-        );
+        $threadid = (int) $this->params()->fromRoute('threadid', 0);
+        $auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
+        $user = $auth->getIdentity();
+        if ($user == null)
+        {
+            return $this->redirect()->toRoute('thread/index', array());
+        }
+        if (!$this->request->isPost())
+        {
+            return $this->redirect()->toRoute('thread/index', array());
+        }
+        $comment = $this->params()->fromPost('comment');
+
+        $post = new Post();
+        $filter = $post->getInputFilter();
+        if ($filter->setData(array(
+            'content' => $comment,
+            'threadid' => $threadid,
+            'solution' => 0,
+        ))->setValidationGroup(InputFilterInterface::VALIDATE_ALL)->isValid())
+        {
+            $post->content = $filter->getValue('content');
+            $post->thread = $thread = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Thread')->find($filter->getValue('threadid'));
+            $post->solution = $filter->getValue('solution');
+            $post->user = $user;
+            $post->date = new \DateTime('now');
+
+            $this->getEntityManager()->persist($post);
+            $this->getEntityManager()->flush();
+        }
+        return $this->redirect()->toRoute('post/index', array('threadid'=>(string)$threadid));
     }
 
     public function voteAction()

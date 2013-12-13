@@ -18,8 +18,8 @@ $( document ).ready(function() {
     /*
      * Switch up and down the comment block
      */
-    $(".new_comment a").click(function(){
-        $(".new_comment form").slideToggle();
+    $(".new_form a").click(function(){
+        $(".new_form form").slideToggle();
     });
 
 
