@@ -192,11 +192,13 @@ hr.clear {
 
 .new_form {
     background-color: #52B5DE;
+    padding: 0;
 }
 
 .new_form a {
     color: black;
     display:block;
+    line-height: 40px;
     text-align:center;
     text-shadow: none;
 }
@@ -208,6 +210,30 @@ hr.clear {
 
 .new_form form {
     display:none;
+    margin: 20px;
+}
+
+.new_form form textarea{
+    min-height: 100px;
+    padding: 10px;
+    width: 906px;
+}
+
+.new_form form input{
+    background-color: #222222;
+    border: none;
+    border-bottom: 2px solid #0a0a0a;
+    border-radius: 3px;
+    color: #b6b6b6;
+    display: block;
+    margin: 10px auto 0 auto;
+    padding: 7px 12px;
+}
+
+.new_form form input:hover {
+    color: #0a0a0a;
+    background-color: #77d066;
+    border-bottom-color: #3C6833 ;
 }
 
 .blue {
