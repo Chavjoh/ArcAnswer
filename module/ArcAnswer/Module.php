@@ -17,6 +17,14 @@ class Module
 		);
 	}
 
+	public function onBootstrap($e)
+	{
+		$auth = $e->getApplication()->getServiceManager()->get('doctrine.authenticationservice.orm_default');
+		$viewModel = $e->getApplication()->getMvcEvent()->getViewModel();
+		$viewModel->GLOBAL_AUTH = $auth;
+
+	}
+
 	public function getConfig()
 	{
 		return include __DIR__ . '/config/module.config.php';
