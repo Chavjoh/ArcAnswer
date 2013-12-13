@@ -100,6 +100,17 @@
         </section>
     <?php } ?>
 
+    <!-- new comment -->
+    <?php if ($this->user != null) { ?>
+        <div class="block new_form">
+            <a class="center" >New comment</a>
+            <form action="/post/create/<?php echo $this->thread->id; ?>" method="post">
+                <textarea name="comment" rows="4" cols="60"></textarea>
+                <input class="center" type="submit" value="Send">
+            </form>
+        </div>
+    <?php } ?>
+
     <!-- The answers -->
     <?php foreach($this->stdPost as $post) { ?>
         <section class="block grey" style="border-left-color: rgba(<?php echo $this->gray ?>, <?php echo $this->gray ?>, <?php echo $this->gray ?>, <?php echo  ( $post[0]->total_votes / $this->max_vote ) ?>);">

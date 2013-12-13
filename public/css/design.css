@@ -94,11 +94,13 @@ a:hover {
 }
 
 input[type=text],
+textarea,
 input[type=password] {
 	color: #52B5DF;
 	padding: 5px;
 }
 input[type=text],
+textarea,
 input[type=password],
 input.searchButton,
 button.searchButton {
@@ -207,10 +209,61 @@ hr.clear {
 	background-repeat: no-repeat;
 }
 
-.new_comment {
-	background-color: #52B5DE;
-	color: black;
-	text-shadow: none;
+.new_form {
+    background-color: #2D2D2D;
+    padding: 0;
+}
+
+.new_form a {
+    border-radius: 3px;
+    color: black;
+    display:block;
+    background-color: #52B5DE;
+    line-height: 40px;
+    text-align:center;
+    text-shadow: none;
+}
+
+.new_form a:hover {
+    color: white;
+    background-color: #2D2D2D;
+    transition: color 0.5s ease, background-color 0.5s ease;
+}
+
+.new_form form {
+    display:none;
+    margin: 20px;
+}
+
+.new_form form textarea{
+    min-height: 100px;
+    padding: 10px;
+    width: 906px;
+    margin-bottom: 20px;
+}
+
+.new_form form input[type=text]{
+    min-height: 10px;
+    padding: 10px;
+    width: 906px;
+    margin-bottom: 20px;
+}
+
+.new_form form input[type=submit]{
+    background-color: #222222;
+    border: none;
+    border-bottom: 2px solid #0a0a0a;
+    border-radius: 3px;
+    color: #b6b6b6;
+    display: block;
+    margin: 0 auto 0 auto;
+    padding: 7px 12px;
+}
+
+.new_form form input[type=submit]:hover {
+    color: #0a0a0a;
+    background-color: #77d066;
+    border-bottom-color: #3C6833 ;
 }
 
 .blue {

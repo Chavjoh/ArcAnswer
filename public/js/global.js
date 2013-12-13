@@ -17,6 +17,14 @@ $( document ).ready(function() {
 	});
 
     /*
+     * Switch up and down the comment block
+     */
+    $(".new_form a").click(function(){
+        $(".new_form form").slideToggle();
+    });
+
+
+    /*
      * Removes the information box in the dom
      * TODO get the url in a dynamic way.
      */
