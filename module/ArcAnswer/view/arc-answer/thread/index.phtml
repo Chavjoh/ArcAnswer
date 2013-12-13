@@ -1,27 +1,27 @@
-<!-- section info temporaire -->
+<!-- Temporary info section
 <ul>
 	<li>Controller : Thread</li>
 	<li>Action : Index</li>
 	<li>Search : <?php echo $this->search; ?></li>
 	<li>Logged user : <?php echo ($this->user != null ? $this->user->nickname : '&lt;aucun&gt;'); ?></li>
 </ul>
-
-<!-- section new thread temporaire -->
-<?php if ($this->user == null) { ?>
-	<a style="color:green">Connectez-vous pour poser une question.</a>
-<?php } else { ?>
-    <div class="block new_form">
-        <a class="center" >Ask your question !</a>
-        <form action="/thread/create" method="post">
-            <label for="title">Title :</label><input type="text" name="title" value="<?php echo $this->newTitle; ?>" />
-            <label for="question">Question :</label><textarea name="question"  rows="4" cols="60"><?php echo $this->newQuestion; ?></textarea>
-                <label for="tags">Tags :</label><input type="text" name="tags" value="<?php echo $this->newTags; ?>" />
-            <input class="center" type="submit" value="Send" />
-        </form>
-    </div>
-<?php } ?>
+-->
 
 <section id="main">
+
+	<?php if ($this->user == null) { ?>
+		<div class="center"> Please login to ask a question. </div>
+	<?php } else { ?>
+		<div class="block new_form">
+			<a class="center" >Ask your question !</a>
+			<form action="/thread/create" method="post">
+				<label for="title">Title :</label><input type="text" name="title" value="<?php echo $this->newTitle; ?>" />
+				<label for="question">Question :</label><textarea name="question"  rows="4" cols="60"><?php echo $this->newQuestion; ?></textarea>
+				<label for="tags">Tags :</label><input type="text" name="tags" value="<?php echo $this->newTags; ?>" />
+				<input class="center" type="submit" value="Send" />
+			</form>
+		</div>
+	<?php } ?>
 
 	<?php foreach($this->messages as $message) {
 		echo '<a style="color:red">Message : ' . $message . '</a><br />';

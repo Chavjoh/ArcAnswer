@@ -406,6 +406,7 @@ hr.clear {
 	float: left;
 	padding: 5px;
 	height: 25px;
+	cursor: pointer;
 }
 
 #dropdown_content > div:first-of-type {
