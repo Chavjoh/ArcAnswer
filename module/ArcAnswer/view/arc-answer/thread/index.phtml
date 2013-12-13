@@ -42,8 +42,8 @@
 	<section class="half float-left">
 		<div class="center"> <img src="<?php echo $this->basePath('img/fine.png'); ?>" alt="Fine" /> </div>
 
-		<?php foreach($this->threads as $thread) { ?>
-			<a class="thread block green" href="#<?php echo $thread->id ?>">
+		<?php foreach($this->threadListSolved as $thread) { ?>
+			<a class="thread block green" href="/post/index/<?php echo $thread->id ?>">
 				<h1> <?php echo $thread->title ?> </h1>
 				<div class="vote"><?php echo $thread->mainPost->getVoteSum() ?> <span>votes</span></div>
 				<div class="information">
@@ -63,14 +63,24 @@
 	</section>
 	<section class="half float-left">
 		<div class="center"> <img src="<?php echo $this->basePath('img/panic.png'); ?>" alt="Panic" /> </div>
-		<a class="block red" href="#">
-			<h1> Une question ? </h1>
-			Block
-		</a>
-		<a class="block red" href="#">
-			<h1> Une question ? </h1>
-			Block
-		</a>
+		<?php foreach($this->threadListUnsolved as $thread) { ?>
+			<a class="thread block red" href="/post/index/<?php echo $thread->id ?>">
+				<h1> <?php echo $thread->title ?> </h1>
+				<div class="vote"><?php echo $thread->mainPost->getVoteSum() ?> <span>votes</span></div>
+				<div class="information">
+					<div class="author">
+						Post&eacute; par <span><?php echo $thread->mainPost->user->nickname ?></span>
+						le <?php echo $thread->mainPost->date->format('d.m.Y \&\a\g\r\a\v\e; H:i:s') ?>
+					</div>
+					<div class="tag">
+						<?php foreach($thread->tags as $tag) { ?>
+							<span><?php echo $tag->name ?></span>
+						<?php } ?>
+					</div>
+				</div>
+				<hr class="clear" />
+			</a>
+		<?php } ?>
 	</section>
 	<hr class="clear" />
 	<div class="center more"><a href="#">Afficher plus</a></div>

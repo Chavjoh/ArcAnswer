@@ -31,6 +31,7 @@ USE `arcanswer`;
 -- Structure de la table `post`
 --
 
+DROP TABLE IF EXISTS `post`;
 CREATE TABLE IF NOT EXISTS `post` (
   `id_post` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_user_post` int(10) unsigned DEFAULT NULL COMMENT 'Author of the post',
@@ -71,6 +72,7 @@ INSERT INTO `post` (`id_post`, `id_user_post`, `id_thread_post`, `content_post`,
 --
 -- Doublure de structure pour la vue `post_vote_view`
 --
+DROP VIEW IF EXISTS `post_vote_view`;
 CREATE TABLE IF NOT EXISTS `post_vote_view` (
 `id_post` int(10) unsigned
 ,`id_user_post` int(10) unsigned
@@ -86,6 +88,7 @@ CREATE TABLE IF NOT EXISTS `post_vote_view` (
 -- Structure de la table `tag`
 --
 
+DROP TABLE IF EXISTS `tag`;
 CREATE TABLE IF NOT EXISTS `tag` (
   `id_tag` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name_tag` varchar(250) NOT NULL,
@@ -125,6 +128,7 @@ INSERT INTO `tag` (`id_tag`, `name_tag`) VALUES
 -- Structure de la table `tag_thread`
 --
 
+DROP TABLE IF EXISTS `tag_thread`;
 CREATE TABLE IF NOT EXISTS `tag_thread` (
   `id_tag` int(10) unsigned NOT NULL,
   `id_thread` int(10) unsigned NOT NULL,
@@ -175,6 +179,7 @@ INSERT INTO `tag_thread` (`id_tag`, `id_thread`) VALUES
 -- Structure de la table `thread`
 --
 
+DROP TABLE IF EXISTS `thread`;
 CREATE TABLE IF NOT EXISTS `thread` (
   `id_thread` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_post_thread` int(10) unsigned NOT NULL COMMENT 'Main post of the thread',
@@ -209,6 +214,7 @@ INSERT INTO `thread` (`id_thread`, `id_post_thread`, `title_thread`) VALUES
 -- Structure de la table `user`
 --
 
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `id_user` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `login_user` varchar(250) NOT NULL,
@@ -245,6 +251,7 @@ INSERT INTO `user` (`id_user`, `login_user`, `password_user`, `nickname_user`) V
 -- Structure de la table `vote`
 --
 
+DROP TABLE IF EXISTS `vote`;
 CREATE TABLE IF NOT EXISTS `vote` (
   `id_post` int(10) unsigned NOT NULL,
   `id_user` int(10) unsigned NOT NULL,
