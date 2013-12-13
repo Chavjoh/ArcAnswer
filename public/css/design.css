@@ -34,7 +34,7 @@ footer .main{
 
 header .name,
 header .user {
-	width: 200px;
+	width: 250px;
 }
 
 header {
@@ -298,4 +298,44 @@ hr.clear {
 
 .more a:hover {
 	color: #717171;
+}
+
+/*
+ * Dropdown bloc
+ */
+#dropdown_content {
+	display: none;
+	position: absolute;
+	margin-top: 35px;
+	padding: 10px;
+	z-index: 50;
+	background-color: #222222;
+	border: 1px solid #888888;
+}
+
+#dropdown_icon {
+	float: left;
+	padding: 5px;
+	height: 25px;
+}
+
+#dropdown_content > div:first-of-type {
+	display: none;
+}
+
+.user_icon {
+	border-color: transparent;
+}
+
+.user_icon,
+.user_icon_active {
+	background-color: #222222;
+	border-width: 1px 1px 0px 1px;
+	border-style: solid;
+	position: relative;
+	z-index: 100;
+}
+
+.user_icon_active {
+	border-color: #888888;
 }

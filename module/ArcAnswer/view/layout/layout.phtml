@@ -39,6 +39,14 @@
 				<h1><?php echo $this->translate('ArcAnswer') ?></h1>
 			</a>
 				<span class="float-right user dark-select">
+					<a id="dropdown_icon" class="user_icon" onclick="dropdown_showHide('#dropdown_icon', '#dropdown_content'); return false;">
+						<img src="<?php echo $this->basePath('img/user.png') ?>" alt="User" />
+					</a>
+					<div id="dropdown_content">
+						<div>
+							Content
+						</div>
+					</div>
 					<select id="orderBy" name="order_by">
 						<option value="date"><?php echo $this->translate('Order by date') ?></option>
 						<option value="vote" selected="selected"><?php echo $this->translate('Order by vote') ?></option>

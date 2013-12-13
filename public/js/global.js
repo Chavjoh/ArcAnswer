@@ -10,11 +10,11 @@ $( document ).ready(function() {
 		height: '100px',
 		selectText: "Order by"
 	});*/
+
 	$("#orderBy").chosen({
-		width: '100%',
+		width: '200px',
 		disable_search: true
 	});
-
 
     /*
      * Removes the information box in the dom
@@ -48,4 +48,27 @@ function vote_click(post_id, value) {
             }
         }
     });
+}
+
+var showDropdown = false;
+
+function dropdown_showHide(icon, content)
+{
+	if (showDropdown)
+	{
+		$(content + '> div:first-of-type').slideUp("slow", function() {
+			$(content).hide();
+			$(icon).removeClass('user_icon_active');
+			$(icon).addClass('user_icon');
+		});
+	}
+	else
+	{
+		$(icon).addClass('user_icon_active');
+		$(icon).removeClass('user_icon');
+		$(content).show();
+		$(content + '> div:first-of-type').slideDown();
+	}
+
+	showDropdown = !showDropdown;
 }
