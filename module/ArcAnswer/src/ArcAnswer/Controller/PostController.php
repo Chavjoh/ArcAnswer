@@ -183,8 +183,33 @@ class PostController extends AbstractActionController
 
     public function electAction()
     {
-        return array(
-            'postid' => (int) $this->params()->fromRoute('postid', 0),
-        );
+        $postId = (int) $this->params()->fromRoute('postid', 0);
+        $post = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Post')->find($postId);
+
+        $posts = $this->getEntityManager()->getRepository('ArcAnswer\Entity\PostVoteView')->findBy(array('thread' => $post->thread->id));
+
+        $auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
+        $user = $auth->getIdentity();
+
+        $hasSolution = false;
+
+        foreach($posts as $elem)
+        {
+            if( $elem->solution == true)
+            {
+                $hasSolution = true;
+            }
+        }
+
+        if( $user != null && $hasSolution == false )
+        {
+            if ( $user->id == $post->thread->mainPost->user->id )
+            {
+                    $post->solution = 1;
+                    $this->getEntityManager()->merge($post);
+                    $this->getEntityManager()->flush();
+            }
+        }
+        return $this->redirect()->toRoute('post/index', array('threadid'=>(string)($post->thread->id)));
     }
 }
