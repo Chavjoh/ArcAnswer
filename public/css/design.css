@@ -11,6 +11,23 @@ input, textarea, button {
 	font-family: 'latoregular', 'Trebuchet MS';
 }
 
+input[type=submit] {
+	color: #b6b6b6;
+	background-color: #222222;
+	border-width: 0px 0px 3px 0px;
+	border-style: solid;
+	border-color: #0a0a0a;
+	border-radius: 3px;
+	padding: 7px 12px;
+	transition: background-color 0.5s ease, border-color 0.5s ease;
+}
+
+input[type=submit]:hover {
+	background-color: #52b5de;
+	color: black;
+	border-color: #306C82;
+}
+
 img {
 	border: none;
 }
@@ -34,7 +51,7 @@ footer .main{
 
 header .name,
 header .user {
-	width: 200px;
+	width: 250px;
 }
 
 header {
@@ -395,4 +412,64 @@ hr.clear {
 
 .more a:hover {
 	color: #717171;
+}
+
+/*
+ * Dropdown bloc
+ */
+#dropdown_content {
+	display: none;
+	position: absolute;
+	margin-top: 35px;
+	padding: 10px;
+	z-index: 50;
+	background-color: #222222;
+	border: 1px solid #121212;
+	box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
+	font-size: 0.8em;
+}
+
+#dropdown_content input[type=submit] {
+	background-color: #111111;
+	border-width: 0px 0px 3px 0px;
+	border-style: solid;
+	border-color: #0a0a0a;
+}
+
+#dropdown_content input[type=submit]:hover {
+	background-color: #52b5de;
+	color: black;
+	border-color: #306C82;
+}
+
+#dropdown_content a:hover {
+	color: #52b5de;
+}
+
+#dropdown_icon {
+	float: left;
+	padding: 5px;
+	height: 25px;
+	cursor: pointer;
+}
+
+#dropdown_content > div:first-of-type {
+	display: none;
+}
+
+.user_icon {
+	border-color: transparent;
+}
+
+.user_icon,
+.user_icon_active {
+	background-color: #222222;
+	border-width: 1px 1px 0px 1px;
+	border-style: solid;
+	position: relative;
+	z-index: 100;
+}
+
+.user_icon_active {
+	border-color: #121212;
 }
