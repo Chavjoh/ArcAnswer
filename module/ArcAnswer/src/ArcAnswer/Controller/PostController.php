@@ -76,7 +76,7 @@ class PostController extends AbstractActionController
         // Sorts posts
         $specialPostMap = array();
         $standardPostMap = array();
-        $maxVote = $posts[0]->total_votes;
+        $maxVote = 0.1;
         foreach($posts as $post)
         {
             if( $post->solution == true)
@@ -87,7 +87,7 @@ class PostController extends AbstractActionController
             {
                 $specialPostMap['question'] = array( $post, !in_array( $post->id, $votedPostId ) );
             }
-            elseif( $maxVote <= $post->total_votes )
+            elseif( $maxVote < $post->total_votes )
             {
                 $maxVote = $post->total_votes;
                 $specialPostMap['popular'] = array( $post, !in_array( $post->id, $votedPostId ) );
