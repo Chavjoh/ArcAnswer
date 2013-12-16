@@ -1,5 +1,9 @@
 <section id="main">
 
+    <?php foreach($this->messages as $message) {
+        echo '<a style="color:red">Message : ' . $message . '</a><br />';
+    }?>
+
     <!-- The question -->
     <section class="block blue">
         <h1> <?php echo $this->thread->title ?> </h1>
@@ -26,6 +30,13 @@
                 <div class="tag">
                     <?php foreach($this->thread->tags as $tag) { ?>
                         <span><?php echo $tag->name ?></span>
+                    <?php } ?>
+                    <?php if ($this->thread->mainPost->user == $this->user) { ?>
+                    <form action="/thread/addtag" method="POST">
+                        <input type="hidden" name="threadid" value="<?php echo $this->thread->id; ?>" />
+                        <input type="text" name="newtag" />
+                        <input type="submit" value="Add" />
+                    </form>
                     <?php } ?>
                 </div>
             </div>

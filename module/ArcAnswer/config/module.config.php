@@ -33,6 +33,7 @@ return array(
 			// /thread/index => affichage de la page d'accueil
 			// /thread/index/bonjour => affichage du résultat de recherche pour 'bonjour'
 			// /thread/create => création d'un nouveau thread
+            // /thread/addTag => ajout de tags à un thread existant
 			'thread' => array(
 				'type' => 'literal',
 				'options' => array(
@@ -80,6 +81,15 @@ return array(
                             'route' => '/showInfo',
                             'defaults' => array(
                                 'action' => 'showInformationBox',
+                            ),
+                        ),
+                    ),
+                    'addtag' => array(
+                        'type' => 'literal',
+                        'options' => array(
+                            'route' => '/addtag',
+                            'defaults' => array(
+                                'action' => 'addtag',
                             ),
                         ),
                     ),

@@ -98,6 +98,9 @@ class PostController extends AbstractActionController
             }
         }
 
+        // Gather flash messages
+        $messages = $this->flashMessenger()->getMessages();
+
         return array(
             'user' => $user,
             'thread' => $thread,
@@ -107,6 +110,7 @@ class PostController extends AbstractActionController
             'stdPost' => $standardPostMap,
             'gray' => self::POST_GRAY,
             'max_vote' => $maxVote,
+            'messages' => $messages,
         );
     }
 

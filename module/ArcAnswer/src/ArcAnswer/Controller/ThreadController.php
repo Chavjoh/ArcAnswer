@@ -311,4 +311,99 @@ class ThreadController extends AbstractActionController
 		}
 		return 'show';
 	}
+
+    public function addtagAction()
+    {
+        // gathering connected user
+        $auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
+        $user = $auth->getIdentity();
+
+        // if user is not currently connected, back to thread/index with flash message
+        if ($user == null)
+        {
+            $this->flashMessenger()->addMessage('You must be logged in to ask other members about your poor personal problems.');
+            return $this->redirect()->toRoute('thread/index', array());
+        }
+
+        // if page has not been called by form post, back to thread/index with flash message
+        if (!$this->request->isPost())
+        {
+            $this->flashMessenger()->addMessage('Acces to this page is restricted.');
+            return $this->redirect()->toRoute('thread/index', array());
+        }
+
+        // gathering POST params
+        $threadId = $this->params()->fromPost('threadid');
+        $tag = $this->params()->fromPost('newtag');
+
+        // prepare request for gathering thread
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb
+            ->select('t')
+            ->from('ArcAnswer\Entity\Thread', 't')
+            ->where($qb->expr()->like($qb->expr()->lower('t.id'), ':thread'));
+
+        // gathering thread
+        $thread = $qb->setParameter('thread', strtolower($threadId))->getQuery()->getOneOrNullResult();
+
+        // checking if thread exist
+        if ($thread == null)
+        {
+            $this->flashMessenger()->addMessage('Stop playing with the URL please.');
+            return $this->redirect()->toRoute('thread/index', array());
+        }
+
+        // checking if thread belong to us
+        if ($thread->mainPost->user != $user)
+        {
+            $this->flashMessenger()->addMessage('This thread does not belong to you. I won\'t kill you for this time, but...');
+            return $this->redirect()->toRoute('thread/index', array());
+        }
+
+        // prepare request for gathering tags
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb
+            ->select('t')
+            ->from('ArcAnswer\Entity\Tag', 't')
+            ->where($qb->expr()->like($qb->expr()->lower('t.name'), ':tag'));
+
+        // loop on all given tags
+        $tags = explode(',', $tag);
+        foreach ($tags as $tag)
+        {
+            $tag = trim($tag);
+            $result = $qb->setParameter('tag', strtolower($tag))->getQuery()->getOneOrNullResult();
+
+            // create tag if it doesn't currently exist
+            if ($result == null)
+            {
+                $result = new Tag();
+                $filter = $result->getInputFilter();
+                if ($filter->setData(array(
+                    'name' => $tag,
+                ))->setValidationGroup(InputFilterInterface::VALIDATE_ALL)->isValid())
+                {
+                    $result->name = $filter->getValue('name');
+                }
+                else
+                {
+                    $this->flashMessenger()->addMessage('Tag "' . $tag . '" is not a valid tag and has not been added.');
+                    $result = null;
+                }
+            }
+
+            // if tag has been accepted, add him to thread
+            if ($result != null)
+            {
+                $thread->tags[] = $result;
+                $this->getEntityManager()->persist($result);
+            }
+        }
+
+        // persist database
+        $this->getEntityManager()->flush();
+
+        // redirect to thread
+        return $this->redirect()->toRoute('post/index', array('threadid' => $threadId));
+    }
 }

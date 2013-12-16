@@ -387,6 +387,22 @@ hr.clear {
 	padding: 2px 8px;
 }
 
+.tag form {
+    display: inline;
+}
+
+.tag form input[type=text] {
+    width: 60px;
+    height:10px;
+}
+
+.tag form input[type=submit] {
+    width:50px;
+    margin: 0px;
+    padding: 0px;
+    height:21px;
+}
+
 .tag span, 
 .code {
 	background-color: #151515;
