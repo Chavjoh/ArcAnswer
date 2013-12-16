@@ -126,7 +126,7 @@ class Post implements InputFilterAwareInterface
 
             $inputFilter->add($factory->createInput(array(
                 'name' => 'threadid',
-                'required' => true,
+                'required' => false,
             )));
 
 			$this->inputFilter = $inputFilter;

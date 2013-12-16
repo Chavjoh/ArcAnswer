@@ -266,10 +266,9 @@ class ThreadController extends AbstractActionController
 		// if thread posting was successful
 		if ($success)
 		{
-			// flash success message and redirect to index
-			// TODO : redirect to thread page
+			// flash success message and redirect to newly created thread
 			$this->flashMessenger()->addMessage('added with success');
-			return $this->redirect()->toRoute('thread/index', array());
+			return $this->redirect()->toRoute('post/index', array('threadid' => $thread->id));
 		}
 
 		// if thread posting failed
