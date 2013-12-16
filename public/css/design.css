@@ -266,6 +266,50 @@ hr.clear {
     border-bottom-color: #3C6833 ;
 }
 
+.mark {
+    background-color: #77d066;
+    background-image: url('../img/mark.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    display: none;
+    float:left;
+    height:50px;
+    margin-left: -70px;
+    position: relative;
+    width:50px;
+}
+
+.mark:hover {
+    background-color: #92e083;
+}
+
+.mark a {
+    display: block;
+    height: 50px;
+    text-indent: -999px;
+    width: 50px;
+}
+
+.mark:after {
+    background-image: url('../img/mark-arrow.png');
+    background-position: left center;
+    background-repeat: no-repeat;
+    content: '';
+    height: 50px;
+    position: absolute;
+    top: 0;
+    right: -10px;
+    width: 10px;
+}
+.mark:hover:after {
+    background-image: url('../img/mark-arrow-hover.png');
+}
+
+.block:hover .mark {
+    display: block;
+}
+
 .blue {
 	border-left: 3px solid #52b5de;
 }
@@ -341,6 +385,22 @@ hr.clear {
 	color: #717171;
 	font-size: 0.8em;
 	padding: 2px 8px;
+}
+
+.tag form {
+    display: inline;
+}
+
+.tag form input[type=text] {
+    width: 60px;
+    height:10px;
+}
+
+.tag form input[type=submit] {
+    width:50px;
+    margin: 0px;
+    padding: 0px;
+    height:21px;
 }
 
 .tag span, 
