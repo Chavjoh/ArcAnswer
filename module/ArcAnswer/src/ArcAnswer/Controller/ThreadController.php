@@ -65,36 +65,31 @@ class ThreadController extends AbstractActionController
 
 	public function indexAction()
 	{
-		/*
-		 * TRY WITH QUERY
-		 *
-		$query = $this->getEntityManager()->createQuery("SELECT t FROM ArcAnswer\Entity\Thread t JOIN t.id_post_thread p ORDER BY p.getVoteSum() ASC");
-		$resultSet = $query->getResult();
-		*/
+        $searchCriteria = $this->params()->fromPost('search', '');
+        $threadList = null;
+        if ($searchCriteria == '')
+        {
+            $threadList = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Thread')->findAll();
+        }
+        else
+        {
+            // prepare request for gathering tags
+            $qb = $this->getEntityManager()->createQueryBuilder();
+            $qb
+                ->select('t')
+                ->from('ArcAnswer\Entity\Thread', 't')
+                ->innerJoin('t.tags', 'u')
+                ->where($qb->expr()->like('u.name', ':tag'));
+            $threadList = $qb->setParameter('tag', strtolower('%' . $searchCriteria . '%'))->getQuery()->getResult();
+        }
 
-		/*
-		 * TRY WITH QUERY BUILDER
-		 *
-		$qb = $this->getEntityManager()->createQueryBuilder();
-		$qb->select('t');
-		$qb->from('ArcAnswer\Entity\Thread', 't');
-		$qb->innerJoin('t.mainPost', 'p');
-		$qb->orderBy('p.voteSum', 'DESC');
-		$resultSet = $qb->getQuery()->getResult();
-		*/
-
-		$threadList = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Thread')->findAll();
-
-		/*
-		 * ORDER BY SPECIFIC FUNCTION
-		 */
+		// ordering threads
 		usort($threadList, array('ArcAnswer\Controller\ThreadController', 'sortByVote'));
 
-		/*
-		 * KEEP ONLY SOLVED OR UNSOLVED THREAD
-		 */
+		// dispatch into solved/unsolved
 		list($arraySolved, $arrayUnsolved) = $this->dispatchThreadList($threadList);
 
+        // gather connected user
 		$auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
 		$user = $auth->getIdentity();
 

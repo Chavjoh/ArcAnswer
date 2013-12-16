@@ -31,7 +31,6 @@ return array(
 
 			// Route to Thread controller
 			// /thread/index => affichage de la page d'accueil
-			// /thread/index/bonjour => affichage du résultat de recherche pour 'bonjour'
 			// /thread/create => création d'un nouveau thread
             // /thread/addTag => ajout de tags à un thread existant
 			'thread' => array(
@@ -46,12 +45,9 @@ return array(
 				'may_terminate' => true,
 				'child_routes' => array(
 					'index' => array(
-						'type' => 'segment',
+						'type' => 'literal',
 						'options' => array(
-							'route' => '/index[/:search]',
-							'constraints' => array(
-								'search' => '.+',
-							),
+							'route' => '/index',
 							'defaults' => array(
 								'action' => 'index',
 							),
