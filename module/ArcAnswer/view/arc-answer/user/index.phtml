@@ -1,10 +1,25 @@
-<ul>
-	<li>Controller : User</li>
-	<li>Action : Index</li>
-</ul>
-<?php foreach ($this->messages as $message) {
+<?php
+foreach ($this->messages as $message) {
 	echo '<a style="color:red">Message : ' . $message . '<br/></a>';
-} ?>
-Login : <?php echo $this->login; ?><br />
-Nickname : <?php echo $this->nickname; ?><br />
-<a href="/user/update" style="color:red">Modify</a>
+}
+?>
+
+<table border="0" cellspacing="0" cellpadding="0" class="user_home">
+	<tr>
+		<td>
+			<img src="<?php echo $this->basePath('img/big_user.png') ?>" alt="User" />
+		</td>
+		<td>
+			<p>
+				Login : <br />
+				<span class="user_information"><?php echo $this->login; ?></span>
+			</p>
+			<p>
+				Nickname : <br />
+				<span class="user_information"><?php echo $this->nickname; ?></span>
+			</p>
+			<br />
+			<a href="/user/update" class="button">Edit your information</a>
+		</td>
+	</tr>
+</table>

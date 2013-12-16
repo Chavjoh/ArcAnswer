@@ -11,7 +11,8 @@ input, textarea, button {
 	font-family: 'latoregular', 'Trebuchet MS';
 }
 
-input[type=submit] {
+input[type=submit],
+.button {
 	color: #b6b6b6;
 	background-color: #222222;
 	border-width: 0px 0px 3px 0px;
@@ -22,7 +23,8 @@ input[type=submit] {
 	transition: background-color 0.5s ease, border-color 0.5s ease;
 }
 
-input[type=submit]:hover {
+input[type=submit]:hover,
+.button:hover {
 	background-color: #52b5de;
 	color: black;
 	border-color: #306C82;
@@ -494,4 +496,19 @@ hr.clear {
 	font-size: 0.8em;
 	color: white;
 	padding: 0px 5px;
+}
+
+.user_home {
+	width: 500px;
+	margin: 0px auto;
+}
+
+.user_home td {
+	width: 50%;
+	padding: 10px;
+	text-align: center;
+}
+
+.user_home .user_information {
+	color: #52b5de;
 }
