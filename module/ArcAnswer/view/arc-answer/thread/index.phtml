@@ -10,7 +10,11 @@
 <section id="main">
 
 	<?php if ($this->user == null) { ?>
-		<div class="center"> Please login to ask a question. </div>
+		<div class="center blue block flash"> Please login to ask a question.
+            <a href="#" class="float-right close">
+                <img src="<?php echo $this->basePath('img/close.png') ?>" alt="Close" />
+            </a>
+        </div>
 	<?php } else { ?>
 		<div class="block new_form">
 			<a class="center" >Ask your question !</a>
@@ -23,9 +27,12 @@
 		</div>
 	<?php } ?>
 
-	<?php foreach($this->messages as $message) {
-		echo '<a style="color:red">Message : ' . $message . '</a><br />';
-	}?>
+	<?php foreach($this->messages as $message) { ?>
+        <div class="center blue block flash"><?php echo $message ?>
+            <a href="#" class="float-right close">
+                <img src="<?php echo $this->basePath('img/close.png') ?>" alt="Close" />
+            </a></div>
+	<?php }?>
 
 	<?php if ($this->infoBoxVisibility == 'show')
 		echo $this->partial('layout/infoBox', array()); ?>

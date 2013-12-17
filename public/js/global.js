@@ -34,10 +34,17 @@ $( document ).ready(function() {
             type: 'POST',
             success: function(data){
                 if(data.success) {
-                    $("#infoBox").remove();
+                    $("#infoBox").slideUp();
                 }
             }
         });
+    });
+
+    /*
+     * Removes the flash message
+     */
+    $(".flash .close").click(function(){
+        $(this).parent().slideUp();
     });
 });
 
