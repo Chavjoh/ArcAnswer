@@ -4,11 +4,12 @@
             <img src="<?php echo $this->basePath('img/close.png') ?>" alt="Close" />
         </a></div>
 <?php }?>
-
-<form action="/user/create" method="post">
-	nickname : <input type="text" name="nick" value="<?php echo $this->nickname; ?>" style="border:1px solid red" /><br />
-	login : <input type="text" name="login" value="<?php echo $this->login; ?>" style="border:1px solid red" /><br />
-	password : <input type="password" name="pass1" style="border:1px solid red" /><br />
-	repeat : <input type="password" name="pass2" style="border:1px solid red" /><br />
-	<input type="submit" value="create" />
-</form>
+    <div class="center user_creation">
+        <form action="/user/create" method="post">
+            <label for="nick">Nickname :</label><br><input type="text" name="nick" value="<?php echo $this->nickname; ?>" /><br>
+            <label for="login">Login :</label><br><input type="text" name="login" value="<?php echo $this->login; ?>" /><br>
+            <label for="pass1">Password : </label><br><input type="password" name="pass1" /><br>
+            <label for="pass2">Repeat : </label><br><input type="password" name="pass2" /><br>
+            <input class="center" type="submit" value="create" />
+        </form>
+    </div>
