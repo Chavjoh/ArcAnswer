@@ -26,14 +26,6 @@ class ThreadController extends AbstractActionController
 
 	const SESSION_FORM = 'formcreatethread';
 
-	public static function sortByVote(Thread $a, Thread $b)
-	{
-		$sumA = $a->mainPost->voteSum;
-		$sumB = $b->mainPost->voteSum;
-
-		return ($sumA == $sumB) ? 0 : (($sumA < $sumB) ? 1 : -1);
-	}
-
 	public static function dispatchThreadList($threadList)
 	{
 		$arraySolved = array();
@@ -83,8 +75,12 @@ class ThreadController extends AbstractActionController
             $threadList = $qb->setParameter('tag', strtolower('%' . $searchCriteria . '%'))->getQuery()->getResult();
         }
 
+        // get ordering function
+        $order = $this->params()->fromPost('order_by', 'vote');
+        $orderClause = 'sortBy' . ($order === 'vote' ? 'Vote' : 'Date');
+
 		// ordering threads
-		usort($threadList, array('ArcAnswer\Controller\ThreadController', 'sortByVote'));
+		usort($threadList, array('ArcAnswer\Entity\Thread', $orderClause));
 
 		// dispatch into solved/unsolved
 		list($arraySolved, $arrayUnsolved) = $this->dispatchThreadList($threadList);
@@ -107,6 +103,23 @@ class ThreadController extends AbstractActionController
 			$session->offsetUnset('question');
 			$session->offsetUnset('tags');
 		}
+
+        // register sorter in layout
+        $this->layout()->sortAction = '/thread/index';
+        if ($order == 'vote')
+        {
+            $this->layout()->sortList = array(
+                'Order by vote' => 'vote',
+                'Order by date' => 'date',
+            );
+        }
+        else
+        {
+            $this->layout()->sortList = array(
+                'Order by date' => 'date',
+                'Order by vote' => 'vote',
+            );
+        }
 
 		return new ViewModel(array(
 			'search' => $this->params()->fromRoute('search', ''),

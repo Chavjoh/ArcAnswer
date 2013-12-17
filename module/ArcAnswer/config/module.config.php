@@ -17,16 +17,16 @@ return array(
 			// /user/update => modification de l'utilisateur courant
 			'user' => array(
 				'type' => 'segment',
-				'options' => array(
-					'route' => '/user/:action',
-					'constraints' => array(
-						'action' => '[a-zA-Z]+',
-					),
-					'defaults' => array(
-						'controller' => 'ArcAnswer\Controller\User',
-						'action' => 'index',
-					),
-				),
+                'options' => array(
+                    'route' => '/user/:action',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'ArcAnswer\Controller\User',
+                        'action' => 'index',
+                    ),
+                ),
 			),
 
 			// Route to Thread controller

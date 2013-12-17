@@ -65,10 +65,15 @@
 							<?php } ?>
 						</div>
 					</div>
-					<select id="orderBy" name="order_by">
-						<option value="date"><?php echo $this->translate('Order by date') ?></option>
-						<option value="vote" selected="selected"><?php echo $this->translate('Order by vote') ?></option>
-					</select>
+                    <?php if (is_array($this->sortList)) { ?>
+                    <form action="<?php echo $this->sortAction; ?>" method="POST">
+                    <select id="orderBy" name="order_by" onchange="this.form.submit()">
+                        <?php foreach ($this->sortList as $text=>$link) { ?>
+                        <option value="<?php echo $link; ?>"><?php echo $this->translate($text); ?></option>
+                        <?php } ?>
+                    </select>
+                    </form>
+                    <?php } ?>
 				</span>
 			<form action="/thread/index" method="post" class="center">
 				<input type="text" name="search" value="" class="searchInput" />

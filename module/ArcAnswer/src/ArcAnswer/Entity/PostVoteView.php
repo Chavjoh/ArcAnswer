@@ -94,7 +94,7 @@ class PostVoteView implements InputFilterAwareInterface
     }
 
     /**
-     * Comparator for PostVoteView objects by votes
+     * Initial sorting
      * @param PostVoteView $a
      * @param PostVoteView $b
      * @return int
@@ -107,5 +107,19 @@ class PostVoteView implements InputFilterAwareInterface
         $sumB == null ? $sumB = 0 : $sumB ;
 
         return ($sumA == $sumB) ? 0 : (($sumA < $sumB) ? 1 : -1);
+    }
+
+    /**
+     * Comparator for PostVoteView objects by dates
+     * @param PostVoteView $a
+     * @param PostVoteView $b
+     * @return int
+     */
+    public static function sortByDate(PostVoteView $a, PostVoteView $b)
+    {
+        $dateA = $a->date;
+        $dateB = $b->date;
+
+        return ($dateA == $dateB) ? 0 : (($dateA < $dateB) ? 1 : -1);
     }
 }
