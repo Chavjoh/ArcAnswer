@@ -1,8 +1,9 @@
-<?php
-foreach ($this->messages as $message) {
-	echo '<a style="color:red">Message : ' . $message . '<br/></a>';
-}
-?>
+<?php foreach($this->messages as $message) { ?>
+    <div class="center blue block flash"><?php echo $message ?>
+        <a href="#" class="float-right close">
+            <img src="<?php echo $this->basePath('img/close.png') ?>" alt="Close" />
+        </a></div>
+<?php }?>
 
 <table border="0" cellspacing="0" cellpadding="0" class="user_home">
 	<tr>

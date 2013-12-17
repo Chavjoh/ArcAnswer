@@ -1,10 +1,10 @@
-<ul>
-	<li>Controller : User</li>
-	<li>Action : Create</li>
-</ul>
-<?php foreach ($this->messages as $message) {
-	echo '<a style="color:red">Message : ' . $message . '<br/></a>';
- } ?>
+<?php foreach($this->messages as $message) { ?>
+    <div class="center blue block flash"><?php echo $message ?>
+        <a href="#" class="float-right close">
+            <img src="<?php echo $this->basePath('img/close.png') ?>" alt="Close" />
+        </a></div>
+<?php }?>
+
 <form action="/user/create" method="post">
 	nickname : <input type="text" name="nick" value="<?php echo $this->nickname; ?>" style="border:1px solid red" /><br />
 	login : <input type="text" name="login" value="<?php echo $this->login; ?>" style="border:1px solid red" /><br />
