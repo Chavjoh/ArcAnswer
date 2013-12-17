@@ -121,4 +121,20 @@ class Thread implements InputFilterAwareInterface
 	{
 		throw new \Exception("Les filtres sont déjà définis directement dans le modèle");
 	}
+
+    public static function sortByVote(Thread $a, Thread $b)
+    {
+        $sumA = $a->mainPost->voteSum;
+        $sumB = $b->mainPost->voteSum;
+
+        return ($sumA == $sumB) ? 0 : (($sumA < $sumB) ? 1 : -1);
+    }
+
+    public static function sortByDate(Thread $a, Thread $b)
+    {
+        $dateA = $a->mainPost->date;
+        $dateB = $b->mainPost->date;
+
+        return ($dateA == $dateB) ? 0 : (($dateA < $dateB) ? 1 : -1);
+    }
 }

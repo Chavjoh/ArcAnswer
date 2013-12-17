@@ -75,7 +75,7 @@ class PostController extends AbstractActionController
 
         // Sorts posts
         $specialPostMap = array();
-        $standardPostMap = array();
+        $standardPostMapTemp = array();
         $maxVote = 0.1;
         foreach($posts as $post)
         {
@@ -94,12 +94,39 @@ class PostController extends AbstractActionController
             }
             else
             {
-                $standardPostMap[$post->id] = array( $post, !in_array( $post->id, $votedPostId ) );
+                $standardPostMapTemp[$post->id] = $post;
             }
+        }
+
+        // final ordering
+        $order = $this->params()->fromPost('order_by', 'vote');
+        $orderClause = 'sortBy' . ($order === 'vote' ? 'Vote' : 'Date');
+        usort($standardPostMapTemp, array('ArcAnswer\Entity\PostVoteView', $orderClause));
+        $standardPostMap = array();
+        foreach ($standardPostMapTemp as $id=>$post)
+        {
+            $standardPostMap[$id] = array($post, !in_array( $id, $votedPostId));
         }
 
         // Gather flash messages
         $messages = $this->flashMessenger()->getMessages();
+
+        // register sorter in layout
+        $this->layout()->sortAction = '/post/index/' . $thread->id;
+        if ($order == 'vote')
+        {
+            $this->layout()->sortList = array(
+                'Order by vote' => 'vote',
+                'Order by date' => 'date',
+            );
+        }
+        else
+        {
+            $this->layout()->sortList = array(
+                'Order by date' => 'date',
+                'Order by vote' => 'vote',
+            );
+        }
 
         return array(
             'user' => $user,
