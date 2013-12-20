@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="content">
-                <?php echo $this->spePost['question'][0]->content; ?>
+                <?php echo htmlentities($this->spePost['question'][0]->content); ?>
             </div>
         </div>
         <hr class="clear" />
