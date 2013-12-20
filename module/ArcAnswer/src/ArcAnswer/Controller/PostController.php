@@ -10,8 +10,17 @@ use Zend\Controller\Action\Exception;
 use Zend\Session\Container;
 use ArcAnswer\Entity\Post;
 
+/**
+ * Parser for BBCode
+ * @package ArcAnswer\Controller
+ */
 class Parser
 {
+	/**
+	 * Parse code
+	 * @param String $text Text to parse
+	 * @return String
+	 */
 	public static function compute($text)
 	{
 		$find = array(
@@ -44,239 +53,307 @@ class Parser
 	}
 }
 
+/**
+ * Posts controller
+ * @package ArcAnswer\Controller
+ */
 class PostController extends AbstractActionController
 {
-    /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    protected $em;
+	/**
+	 * Doctrine entity manager
+	 * @var \Doctrine\ORM\EntityManager
+	 */
+	protected $em;
 
-    /**
-     * @var Value of a sigle up vote
-     */
-    const UP_VOTE_VALUE = 1;
+	/**
+	 * Value of a single up vote
+	 * @var int
+	 */
+	const UP_VOTE_VALUE = 1;
 
-    /**
-     * @var Value of a sigle down vote
-     */
-    const DOWN_VOTE_VALUE = -1;
+	/**
+	 * Value of a single down vote
+	 * @var int
+	 */
+	const DOWN_VOTE_VALUE = -1;
 
-    /**
-     * @var Gray of the left border
-     */
-    const POST_GRAY = 182;
+	/**
+	 * Value of the gray border
+	 * @var int
+	 */
+	const POST_GRAY = 182;
 
-    protected function getEntityManager()
-    {
-        if (null === $this->em)
-        {
-            $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-        }
-        return $this->em;
-    }
+	/**
+	 * Get the Doctrine Entity Manager
+	 * @return \Doctrine\ORM\EntityManager
+	 */
+	protected function getEntityManager()
+	{
+		if (null === $this->em)
+		{
+			$this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+		}
+		return $this->em;
+	}
 
-    public function indexAction()
-    {
-        // Gets thread
-        $threadid = (int) $this->params()->fromRoute('threadid', 0);
-        $thread = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Thread')->find($threadid);
-        if ( $thread === null )
-        {
-            $this->getResponse()->setStatusCode(404);
-            return;
-        }
+	/**
+	 * Action index
+	 * Page displaying a thread content
+	 * @return ViewModel|\Zend\Http\Response
+	 */
+	public function indexAction()
+	{
+		// Gets thread
+		$threadid = (int)$this->params()->fromRoute('threadid', 0);
+		$thread = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Thread')->find($threadid);
+		if ($thread === null)
+		{
+			return $this->getResponse()->setStatusCode(404);
+		}
 
-        // Gets logged user
-        $auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
-        $user = $auth->getIdentity();
+		// Gets logged user
+		$auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
+		$user = $auth->getIdentity();
 
-        // Gets posts
-        $posts = $this->getEntityManager()->getRepository('ArcAnswer\Entity\PostVoteView')->findBy(array('thread' => $threadid));
-        usort($posts, array('ArcAnswer\Entity\PostVoteView', 'sortByVote'));
+		// Gets posts
+		$posts = $this->getEntityManager()->getRepository('ArcAnswer\Entity\PostVoteView')->findBy(array('thread' => $threadid));
+		usort($posts, array('ArcAnswer\Entity\PostVoteView', 'sortByVote'));
 
-        // Gets votes
-        $votedPostId = array();
-        if( $user!= null )
-        {
-            $votes = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Vote')->findBy(array('id_user' => $user->id));
+		// Gets votes
+		$votedPostId = array();
+		if ($user != null)
+		{
+			$votes = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Vote')->findBy(array('id_user' => $user->id));
 
-            foreach( $votes as $vote )
-            {
-                $votedPostId[] = $vote->id_post->id;
-            }
-        }
+			foreach ($votes as $vote)
+			{
+				$votedPostId[] = $vote->id_post->id;
+			}
+		}
 
-        // Sorts posts
-        $specialPostMap = array();
-        $standardPostMapTemp = array();
-        $maxVote = 0.1;
-        foreach($posts as $post)
-        {
-            if( $post->solution == true)
-            {
-                $specialPostMap['solution'] = array( $post, !in_array( $post->id, $votedPostId ) );
-            }
-            elseif( $post->id == $thread->mainPost->id )
-            {
-                $specialPostMap['question'] = array( $post, !in_array( $post->id, $votedPostId ) );
-            }
-            elseif( $maxVote < $post->total_votes )
-            {
-                $maxVote = $post->total_votes;
-                $specialPostMap['popular'] = array( $post, !in_array( $post->id, $votedPostId ) );
-            }
-            else
-            {
-                $standardPostMapTemp[$post->id] = $post;
-            }
-        }
+		// Sorts posts
+		$specialPostMap = array();
+		$standardPostMapTemp = array();
+		$maxVote = 0.1;
+		foreach ($posts as $post)
+		{
+			if ($post->solution == true)
+			{
+				$specialPostMap['solution'] = array($post, !in_array($post->id, $votedPostId));
+			}
+			elseif ($post->id == $thread->mainPost->id)
+			{
+				$specialPostMap['question'] = array($post, !in_array($post->id, $votedPostId));
+			}
+			elseif ($maxVote < $post->total_votes)
+			{
+				$maxVote = $post->total_votes;
+				$specialPostMap['popular'] = array($post, !in_array($post->id, $votedPostId));
+			}
+			else
+			{
+				$standardPostMapTemp[$post->id] = $post;
+			}
+		}
 
-        // final ordering
-        $order = $this->params()->fromPost('order_by', 'vote');
-        $orderClause = 'sortBy' . ($order === 'vote' ? 'Vote' : 'Date');
-        usort($standardPostMapTemp, array('ArcAnswer\Entity\PostVoteView', $orderClause));
-        $standardPostMap = array();
-        foreach ($standardPostMapTemp as $id=>$post)
-        {
-            $standardPostMap[$id] = array($post, !in_array( $id, $votedPostId));
-        }
+		// final ordering
+		$order = $this->params()->fromPost('order_by', 'vote');
+		$orderClause = 'sortBy' . ($order === 'vote' ? 'Vote' : 'Date');
+		usort($standardPostMapTemp, array('ArcAnswer\Entity\PostVoteView', $orderClause));
+		$standardPostMap = array();
+		foreach ($standardPostMapTemp as $id => $post)
+		{
+			$standardPostMap[$id] = array($post, !in_array($id, $votedPostId));
+		}
 
-        // Gather flash messages
-        $messages = $this->flashMessenger()->getMessages();
+		// Gather flash messages
+		$messages = $this->flashMessenger()->getMessages();
 
-        // register sorter in layout
-        $this->layout()->sortAction = '/post/index/' . $thread->id;
-        if ($order == 'vote')
-        {
-            $this->layout()->sortList = array(
-                'Order by vote' => 'vote',
-                'Order by date' => 'date',
-            );
-        }
-        else
-        {
-            $this->layout()->sortList = array(
-                'Order by date' => 'date',
-                'Order by vote' => 'vote',
-            );
-        }
+		// register sorter in layout
+		$this->layout()->sortAction = '/post/index/' . $thread->id;
+		if ($order == 'vote')
+		{
+			$this->layout()->sortList = array(
+				'Order by vote' => 'vote',
+				'Order by date' => 'date',
+			);
+		}
+		else
+		{
+			$this->layout()->sortList = array(
+				'Order by date' => 'date',
+				'Order by vote' => 'vote',
+			);
+		}
 
-	    $parser = new Parser();
+		// instanciate BBcode parser
+		$parser = new Parser();
 
-        return array(
-            'user' => $user,
-            'thread' => $thread,
-            'up_val' => self::UP_VOTE_VALUE,
-            'down_val' => self::DOWN_VOTE_VALUE,
-            'spePost' => $specialPostMap,
-            'stdPost' => $standardPostMap,
-            'gray' => self::POST_GRAY,
-            'max_vote' => $maxVote,
-            'messages' => $messages,
-	        'parser' => $parser,
-        );
-    }
+		// send data to view
+		return new ViewModel(array(
+			'user' => $user,
+			'thread' => $thread,
+			'up_val' => self::UP_VOTE_VALUE,
+			'down_val' => self::DOWN_VOTE_VALUE,
+			'spePost' => $specialPostMap,
+			'stdPost' => $standardPostMap,
+			'gray' => self::POST_GRAY,
+			'max_vote' => $maxVote,
+			'messages' => $messages,
+			'parser' => $parser,
+		));
+	}
 
-    public function createAction()
-    {
-        $threadid = (int) $this->params()->fromRoute('threadid', 0);
-        $auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
-        $user = $auth->getIdentity();
-        if ($user == null)
-        {
-            return $this->redirect()->toRoute('thread/index', array());
-        }
-        if (!$this->request->isPost())
-        {
-            return $this->redirect()->toRoute('thread/index', array());
-        }
-        $comment = $this->params()->fromPost('comment');
+	/**
+	 * Action create
+	 * Creation of a new post
+	 * @return \Zend\Http\Response
+	 */
+	public function createAction()
+	{
+		// get thread id
+		$threadid = (int)$this->params()->fromRoute('threadid', 0);
 
-        $post = new Post();
-        $filter = $post->getInputFilter();
-        if ($filter->setData(array(
-            'content' => $comment,
-            'threadid' => $threadid,
-            'solution' => 0,
-        ))->setValidationGroup(InputFilterInterface::VALIDATE_ALL)->isValid())
-        {
-            $post->content = $filter->getValue('content');
-            $post->thread = $thread = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Thread')->find($filter->getValue('threadid'));
-            $post->solution = $filter->getValue('solution');
-            $post->user = $user;
-            $post->date = new \DateTime('now');
+		// gathering authenticated user
+		$auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
+		$user = $auth->getIdentity();
 
-            $this->getEntityManager()->persist($post);
-            $this->getEntityManager()->flush();
-        }
-        return $this->redirect()->toRoute('post/index', array('threadid'=>(string)$threadid));
-    }
+		// if no user is currently logged in, redirect to home page
+		if ($user == null)
+		{
+			return $this->redirect()->toRoute('thread/index', array());
+		}
 
-    public function voteAction()
-    {
-        $postId = (int) $this->params()->fromRoute('postid', 0);
-        $value = (int) $this->params()->fromRoute('val', self::DOWN_VOTE_VALUE);
-        $auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
-        $user = $auth->getIdentity();
-        $response = new JsonModel();
-        $response->setVariable("success", false);
+		// if request type is not post, redirect to home page
+		if (!$this->request->isPost())
+		{
+			return $this->redirect()->toRoute('thread/index', array());
+		}
 
-        if( $user != null )
-        {
-            $vote = new Vote();
-            $filter = $vote->getInputFilter();
-            if ($filter->setData(array(
-                'id_user' => $user->id,
-                'id_post' => $postId,
-                'value' => $value,
-            ))->setValidationGroup(InputFilterInterface::VALIDATE_ALL)->isValid())
-            {
-                if ( is_null( $this->getEntityManager()->getRepository('ArcAnswer\Entity\Vote')->find(array("id_user" => $user->id, "id_post" => $postId)) ) )
-                {
-                    $vote->id_user = $user;
-                    $vote->id_post = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Post')->find($postId);
-                    $vote->value = $filter->getValue('value');
-                    $this->getEntityManager()->persist($vote);
-                    $this->getEntityManager()->flush();
+		// get comment from post
+		$comment = $this->params()->fromPost('comment');
 
-                    $response->setVariable("success", true);
-                }
+		// Create new post
+		$post = new Post();
 
-            }
-        }
+		// Filtering input data
+		$filter = $post->getInputFilter();
+		if ($filter->setData(array(
+			'content' => $comment,
+			'threadid' => $threadid,
+			'solution' => 0,
+		))->setValidationGroup(InputFilterInterface::VALIDATE_ALL)->isValid()
+		)
+		{
+			// Register post
+			$post->content = $filter->getValue('content');
+			$post->thread = $thread = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Thread')->find($filter->getValue('threadid'));
+			$post->solution = $filter->getValue('solution');
+			$post->user = $user;
+			$post->date = new \DateTime('now');
+			$this->getEntityManager()->persist($post);
+			$this->getEntityManager()->flush();
+		}
 
-        return $response;
-    }
+		// Redirect to current page
+		return $this->redirect()->toRoute('post/index', array('threadid' => (string)$threadid));
+	}
 
-    public function electAction()
-    {
-        $postId = (int) $this->params()->fromRoute('postid', 0);
-        $post = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Post')->find($postId);
+	/**
+	 * Action vote
+	 * Vote for a designated post
+	 * @return JsonModel
+	 */
+	public function voteAction()
+	{
+		// get values from route
+		$postId = (int)$this->params()->fromRoute('postid', 0);
+		$value = (int)$this->params()->fromRoute('val', self::DOWN_VOTE_VALUE);
 
-        $posts = $this->getEntityManager()->getRepository('ArcAnswer\Entity\PostVoteView')->findBy(array('thread' => $post->thread->id));
+		// gathering authenticated user
+		$auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
+		$user = $auth->getIdentity();
 
-        $auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
-        $user = $auth->getIdentity();
+		// prepare JSON model
+		$response = new JsonModel();
+		$response->setVariable("success", false);
 
-        $hasSolution = false;
+		// if a user is currently logged in
+		if ($user != null)
+		{
+			// create new vote
+			$vote = new Vote();
 
-        foreach($posts as $elem)
-        {
-            if( $elem->solution == true)
-            {
-                $hasSolution = true;
-            }
-        }
+			// filter input data
+			$filter = $vote->getInputFilter();
+			if ($filter->setData(array(
+				'id_user' => $user->id,
+				'id_post' => $postId,
+				'value' => $value,
+			))->setValidationGroup(InputFilterInterface::VALIDATE_ALL)->isValid()
+			)
+			{
+				// if user has not already voted for that post
+				if (is_null($this->getEntityManager()->getRepository('ArcAnswer\Entity\Vote')->find(array("id_user" => $user->id, "id_post" => $postId))))
+				{
+					$vote->id_user = $user;
+					$vote->id_post = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Post')->find($postId);
+					$vote->value = $filter->getValue('value');
+					$this->getEntityManager()->persist($vote);
+					$this->getEntityManager()->flush();
 
-        if( $user != null && $hasSolution == false )
-        {
-            if ( $user->id == $post->thread->mainPost->user->id )
-            {
-                $post->solution = 1;
-                $this->getEntityManager()->merge($post);
-                $this->getEntityManager()->flush();
-            }
-        }
-        return $this->redirect()->toRoute('post/index', array('threadid'=>(string)($post->thread->id)));
-    }
+					$response->setVariable("success", true);
+				}
+			}
+		}
+
+		// return JSON response
+		return $response;
+	}
+
+	/**
+	 * Action elect
+	 * Elect a post as the solution for its thread
+	 * @return \Zend\Http\Response
+	 */
+	public function electAction()
+	{
+		// gather post from route
+		$postId = (int)$this->params()->fromRoute('postid', 0);
+		$post = $this->getEntityManager()->getRepository('ArcAnswer\Entity\Post')->find($postId);
+
+		// gather list of all posts from current thread
+		$posts = $this->getEntityManager()->getRepository('ArcAnswer\Entity\PostVoteView')->findBy(array('thread' => $post->thread->id));
+
+		// gathering authenticated user
+		$auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
+		$user = $auth->getIdentity();
+
+		// marker for solution verification
+		$hasSolution = false;
+
+		// loop on all posts to find one already marked as solution
+		foreach ($posts as $elem)
+		{
+			if ($elem->solution == true)
+			{
+				$hasSolution = true;
+			}
+		}
+
+		// if user is logged in and current thread does not already have solution
+		if ($user != null && $hasSolution == false)
+		{
+			// if current user is the owner of the thread, mark as solution
+			if ($user->id == $post->thread->mainPost->user->id)
+			{
+				$post->solution = 1;
+				$this->getEntityManager()->merge($post);
+				$this->getEntityManager()->flush();
+			}
+		}
+
+		// redirect to thread page
+		return $this->redirect()->toRoute('post/index', array('threadid' => (string)($post->thread->id)));
+	}
 }
