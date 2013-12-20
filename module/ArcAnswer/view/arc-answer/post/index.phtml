@@ -128,7 +128,7 @@
     <!-- The answers -->
     <?php foreach($this->stdPost as $post) { ?>
         <section class="block grey" style="border-left-color: rgba(<?php echo $this->gray ?>, <?php echo $this->gray ?>, <?php echo $this->gray ?>, <?php echo  ( $post[0]->total_votes / $this->max_vote ) ?>);">
-            <?php if ( (! array_key_exists('solution', $this->spePost) && $user->id == $this->spePost['question'][0]->user->id ) ) { ?>
+            <?php if ( (! array_key_exists('solution', $this->spePost) && $this->user != null && $this->user->id == $this->spePost['question'][0]->user->id ) ) { ?>
                 <div class="mark"><a href="/post/elect/<?php echo $post[0]->id ?>" >Mark as solution</a> </div>
             <?php } ?>
             <div class="vote" id="vote_<?php echo $post[0]->id ?>" >

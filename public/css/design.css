@@ -532,3 +532,7 @@ hr.clear {
 	font-size: 0.8em;
 	padding-top: 8px;
 }
+
+pre.prettyprint {
+    padding: 10px;
+    border-radius: 3px;}
