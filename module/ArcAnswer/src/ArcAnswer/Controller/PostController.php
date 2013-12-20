@@ -236,9 +236,9 @@ class PostController extends AbstractActionController
         {
             if ( $user->id == $post->thread->mainPost->user->id )
             {
-                    $post->solution = 1;
-                    $this->getEntityManager()->merge($post);
-                    $this->getEntityManager()->flush();
+                $post->solution = 1;
+                $this->getEntityManager()->merge($post);
+                $this->getEntityManager()->flush();
             }
         }
         return $this->redirect()->toRoute('post/index', array('threadid'=>(string)($post->thread->id)));
