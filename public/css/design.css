@@ -7,6 +7,10 @@ html, body {
 	color: #b6b6b6;
 }
 
+label, input[type=submit], button {
+	cursor: pointer;
+}
+
 input, textarea, button {
 	font-family: 'latoregular', 'Trebuchet MS';
 }
