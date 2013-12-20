@@ -23,6 +23,7 @@ class Parser
 			'~\[color=(.*?)\](.*?)\[/color\]~s',
 			'~\[url\]((?:ftp|https?)://.*?)\[/url\]~s',
 			'~\[img\](https?://.*?\.(?:jpg|jpeg|gif|png|bmp))\[/img\]~s',
+			'~\[center\](.*?)\[/center\]~s',
 			'~```(.*?)```~s',
 		);
 
@@ -30,11 +31,12 @@ class Parser
 			'<b>$1</b>',
 			'<i>$1</i>',
 			'<span style="text-decoration:underline;">$1</span>',
-			'<pre>$1</'.'pre>',
+			'<blockquote>$1</blockquote>',
 			'<span style="font-size:$1px;">$2</span>',
 			'<span style="color:$1;">$2</span>',
 			'<a href="$1">$1</a>',
 			'<img src="$1" alt="" />',
+			'<div class="center">$1</div>',
 			'<pre class="prettyprint">$1</pre>',
 		);
 
