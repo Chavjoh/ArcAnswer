@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="content">
-                <?php echo htmlentities($this->spePost['question'][0]->content); ?>
+                <?php echo $this->parser->compute(htmlentities($this->spePost['question'][0]->content)); ?>
             </div>
         </div>
         <hr class="clear" />
@@ -75,7 +75,7 @@
                 </div>
             </div>
             <div class="content">
-                <?php echo htmlentities($this->spePost['solution'][0]->content); ?>
+                <?php echo $this->parser->compute(htmlentities($this->spePost['solution'][0]->content)); ?>
             </div>
         </div>
         <hr class="clear" />
@@ -107,7 +107,7 @@
                     </div>
                 </div>
                 <div class="content">
-                    <?php echo htmlentities($this->spePost['popular'][0]->content); ?>
+                    <?php echo $this->parser->compute(htmlentities($this->spePost['popular'][0]->content)); ?>
                 </div>
             </div>
             <hr class="clear" />
@@ -153,7 +153,7 @@
                     </div>
                 </div>
                 <div class="content">
-                    <?php echo htmlentities($post[0]->content); ?>
+                    <?php echo $this->parser->compute(htmlentities($post[0]->content)); ?>
                 </div>
             </div>
             <hr class="clear" />
