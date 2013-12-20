@@ -17,6 +17,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Tag implements InputFilterAwareInterface
 {
+	/**
+	 * Normalized input filter
+	 * @var InputFilter
+	 */
 	protected $inputFilter;
 
 	/**
@@ -31,21 +35,38 @@ class Tag implements InputFilterAwareInterface
 	 */
 	protected $name;
 
+	/**
+	 * Default constructor
+	 */
 	public function __construct()
 	{
 		$this->posts = new ArrayCollection();
 	}
 
+	/**
+	 * Magic getter for protected attributes
+	 * @param String $property Name of property to get
+	 * @return mixed
+	 */
 	public function __get($property)
 	{
 		return $this->$property;
 	}
 
+	/**
+	 * Magic setter for protected attributes
+	 * @param String $property Name of property to set
+	 * @param String $value Value to set
+	 */
 	public function __set($property, $value)
 	{
 		$this->$property = $value;
 	}
 
+	/**
+	 * Prepare and return input filter
+	 * @return InputFilter
+	 */
 	public function getInputFilter()
 	{
 		if (!$this->inputFilter)
@@ -73,6 +94,12 @@ class Tag implements InputFilterAwareInterface
 		return $this->inputFilter;
 	}
 
+	/**
+	 * Define input filter
+	 * @param InputFilterInterface $inputFilter
+	 * @return void|InputFilterAwareInterface
+	 * @throws \Exception
+	 */
 	public function setInputFilter(InputFilterInterface $inputFilter)
 	{
 		throw new \Exception("Les filtres sont déjà définis directement dans le modèle");

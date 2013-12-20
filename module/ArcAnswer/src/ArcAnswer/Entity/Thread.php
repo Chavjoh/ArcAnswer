@@ -20,9 +20,16 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Thread implements InputFilterAwareInterface
 {
+	/**
+	 * Normalized input filter
+	 * @var InputFilter
+	 */
 	protected $inputFilter;
 
-	// Cache indication if thread has solution
+	/**
+	 * Cache indicator => do the thread has a solution ?
+	 * @var boolean
+	 */
 	protected $hasSolution = null;
 
 	/**
@@ -57,39 +64,64 @@ class Thread implements InputFilterAwareInterface
 	 */
 	protected $tags;
 
+	/**
+	 * Default constructor
+	 */
 	public function __construct()
 	{
 		$this->posts = new ArrayCollection();
 		$this->tags = new ArrayCollection();
 	}
 
+	/**
+	 * Magic getter for protected attributes
+	 * @param String $property Name of property to get
+	 * @return mixed
+	 */
 	public function __get($property)
 	{
 		if ($property == "hasSolution")
 		{
 			if ($this->hasSolution == null)
+			{
 				$this->hasSolution = $this->hasSolution();
+			}
 		}
 
 		return $this->$property;
 	}
 
-	public function hasSolution()
-	{
-		foreach ($this->posts AS $entry)
-		{
-			if ($entry->solution)
-				return true;
-		}
-
-		return false;
-	}
-
+	/**
+	 * Magic setter for protected attributes
+	 * @param String $property Name of property to set
+	 * @param String $value Value to set
+	 */
 	public function __set($property, $value)
 	{
 		$this->$property = $value;
 	}
 
+	/**
+	 * Does the thread have a solution ?
+	 * @return boolean
+	 */
+	public function hasSolution()
+	{
+		foreach ($this->posts AS $entry)
+		{
+			if ($entry->solution)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Prepare and return input filter
+	 * @return InputFilter
+	 */
 	public function getInputFilter()
 	{
 		if (!$this->inputFilter)
@@ -117,24 +149,42 @@ class Thread implements InputFilterAwareInterface
 		return $this->inputFilter;
 	}
 
+	/**
+	 * Define input filter
+	 * @param InputFilterInterface $inputFilter
+	 * @return void|InputFilterAwareInterface
+	 * @throws \Exception
+	 */
 	public function setInputFilter(InputFilterInterface $inputFilter)
 	{
 		throw new \Exception("Les filtres sont déjà définis directement dans le modèle");
 	}
 
-    public static function sortByVote(Thread $a, Thread $b)
-    {
-        $sumA = $a->mainPost->voteSum;
-        $sumB = $b->mainPost->voteSum;
+	/**
+	 * Comparator for sorting threads by votes
+	 * @param Thread $a
+	 * @param Thread $b
+	 * @return int
+	 */
+	public static function sortByVote(Thread $a, Thread $b)
+	{
+		$sumA = $a->mainPost->voteSum;
+		$sumB = $b->mainPost->voteSum;
 
-        return ($sumA == $sumB) ? 0 : (($sumA < $sumB) ? 1 : -1);
-    }
+		return ($sumA == $sumB) ? 0 : (($sumA < $sumB) ? 1 : -1);
+	}
 
-    public static function sortByDate(Thread $a, Thread $b)
-    {
-        $dateA = $a->mainPost->date;
-        $dateB = $b->mainPost->date;
+	/**
+	 * Comparator for sorting threads by dates
+	 * @param Thread $a
+	 * @param Thread $b
+	 * @return int
+	 */
+	public static function sortByDate(Thread $a, Thread $b)
+	{
+		$dateA = $a->mainPost->date;
+		$dateB = $b->mainPost->date;
 
-        return ($dateA == $dateB) ? 0 : (($dateA < $dateB) ? 1 : -1);
-    }
+		return ($dateA == $dateB) ? 0 : (($dateA < $dateB) ? 1 : -1);
+	}
 }

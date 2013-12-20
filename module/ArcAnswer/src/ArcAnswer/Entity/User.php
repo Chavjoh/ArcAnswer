@@ -16,6 +16,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class User implements InputFilterAwareInterface
 {
+	/**
+	 * Normalized input filter
+	 * @var InputFilter
+	 */
 	protected $inputFilter;
 
 	/**
@@ -40,16 +44,29 @@ class User implements InputFilterAwareInterface
 	 */
 	protected $nickname;
 
+	/**
+	 * Default constructor
+	 */
 	public function __construct()
 	{
 		// Nothing here
 	}
 
+	/**
+	 * Magic getter for protected attributes
+	 * @param String $property Name of property to get
+	 * @return mixed
+	 */
 	public function __get($property)
 	{
 		return $this->$property;
 	}
 
+	/**
+	 * Magic setter for protected attributes
+	 * @param String $property Name of property to set
+	 * @param String $value Value to set
+	 */
 	public function __set($property, $value)
 	{
 		if ($property === 'password')
@@ -59,22 +76,42 @@ class User implements InputFilterAwareInterface
 		$this->$property = $value;
 	}
 
+	/**
+	 * Set a clear password
+	 * @param String $clearPassword Clear password
+	 * @return $this
+	 */
 	public function setClearPassword($clearPassword)
 	{
 		$this->password = self::hashPassword($clearPassword);
 		return $this;
 	}
 
+	/**
+	 * Hash the password for database storage
+	 * @param String $clearPassword Clear password
+	 * @return String Hashed password
+	 */
 	public static function hashPassword($clearPassword)
 	{
 		return sha1($clearPassword);
 	}
 
-	public static function testPassword($player, $clearPassword)
+	/**
+	 * Test if 2 passwords are equals
+	 * @param User $user User of which test the password
+	 * @param String $clearPassword Clear password to test
+	 * @return bool
+	 */
+	public static function testPassword($user, $clearPassword)
 	{
-		return self::hashPassword($clearPassword) === $player->password;
+		return self::hashPassword($clearPassword) === $user->password;
 	}
 
+	/**
+	 * Prepare and return input filter
+	 * @return InputFilter
+	 */
 	public function getInputFilter()
 	{
 		if (!$this->inputFilter)
@@ -128,6 +165,12 @@ class User implements InputFilterAwareInterface
 		return $this->inputFilter;
 	}
 
+	/**
+	 * Define input filter
+	 * @param InputFilterInterface $inputFilter
+	 * @return void|InputFilterAwareInterface
+	 * @throws \Exception
+	 */
 	public function setInputFilter(InputFilterInterface $inputFilter)
 	{
 		throw new \Exception("Les filtres sont déjà définis directement dans le modèle");

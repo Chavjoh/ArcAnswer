@@ -20,9 +20,16 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Post implements InputFilterAwareInterface
 {
+	/**
+	 * Normalized input filter
+	 * @var InputFilter
+	 */
 	protected $inputFilter;
 
-	// Cache for sum of votes
+	/**
+	 * Sum of all votes for this post
+	 * @var int
+	 */
 	protected $voteSum = null;
 
 	/**
@@ -64,27 +71,46 @@ class Post implements InputFilterAwareInterface
 	 */
 	private $vote;
 
+	/**
+	 * Default constructor
+	 */
 	public function __construct()
 	{
 		$this->posts = new ArrayCollection();
 	}
 
+	/**
+	 * Magic getter for protected attributes
+	 * @param String $property Name of property to get
+	 * @return mixed
+	 */
 	public function __get($property)
 	{
 		if ($property == "voteSum")
 		{
 			if ($this->voteSum == null)
+			{
 				$this->voteSum = $this->getVoteSum();
+			}
 		}
 
 		return $this->$property;
 	}
 
+	/**
+	 * Magic setter for protected attributes
+	 * @param String $property Name of property to set
+	 * @param String $value Value to set
+	 */
 	public function __set($property, $value)
 	{
 		$this->$property = $value;
 	}
 
+	/**
+	 * Compute and return vote sum for this post
+	 * @return int
+	 */
 	public function getVoteSum()
 	{
 		$sum = 0;
@@ -97,6 +123,10 @@ class Post implements InputFilterAwareInterface
 		return $sum;
 	}
 
+	/**
+	 * Prepare and return input filter
+	 * @return InputFilter
+	 */
 	public function getInputFilter()
 	{
 		if (!$this->inputFilter)
@@ -124,16 +154,22 @@ class Post implements InputFilterAwareInterface
 				'required' => true,
 			)));
 
-            $inputFilter->add($factory->createInput(array(
-                'name' => 'threadid',
-                'required' => false,
-            )));
+			$inputFilter->add($factory->createInput(array(
+				'name' => 'threadid',
+				'required' => false,
+			)));
 
 			$this->inputFilter = $inputFilter;
 		}
 		return $this->inputFilter;
 	}
 
+	/**
+	 * Define input filter
+	 * @param InputFilterInterface $inputFilter
+	 * @return void|InputFilterAwareInterface
+	 * @throws \Exception
+	 */
 	public function setInputFilter(InputFilterInterface $inputFilter)
 	{
 		throw new \Exception("Les filtres sont déjà définis directement dans le modèle");
