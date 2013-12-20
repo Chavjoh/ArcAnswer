@@ -73,7 +73,13 @@
                         <?php } ?>
                     </select>
                     </form>
-                    <?php } ?>
+                    <?php
+                    }
+                    else {
+	                    if ($this->GLOBAL_AUTH->getIdentity() != null) {
+		                    echo '<div id="connected_as"> Connected as '.$this->GLOBAL_AUTH->getIdentity()->login.'</div>';
+	                    }
+                    }?>
 				</span>
 			<form action="/thread/index" method="post" class="center">
 				<input type="text" name="search" value="" class="searchInput" />
