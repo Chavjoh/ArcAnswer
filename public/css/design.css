@@ -124,6 +124,10 @@ button.searchButton {
 	background-color: #151515;
 }
 
+input.searchButton:hover {
+	background-color: transparent;
+}
+
 input.searchButton,
 button.searchButton {
 	background-image: url('../img/search.png');
