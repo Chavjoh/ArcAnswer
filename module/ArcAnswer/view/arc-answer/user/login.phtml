@@ -1,7 +1,7 @@
 <ul>
 	<li>Controller : User</li>
 	<li>Action : Login</li>
-	<li>Login : <?php echo $this->login; ?></li>
-	<li>Password : <?php echo $this->password; ?></li>
-	<li>Hash : <?php echo $this->hash; ?></li>
+	<li>Login : <?php echo htmlentities($this->login); ?></li>
+	<li>Password : <?php echo htmlentities($this->password); ?></li>
+	<li>Hash : <?php echo htmlentities($this->hash); ?></li>
 </ul>
