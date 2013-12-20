@@ -13,11 +13,11 @@
 		<td>
 			<p>
 				Login : <br />
-				<span class="user_information"><?php echo $this->login; ?></span>
+				<span class="user_information"><?php echo htmlentities($this->login); ?></span>
 			</p>
 			<p>
 				Nickname : <br />
-				<span class="user_information"><?php echo $this->nickname; ?></span>
+				<span class="user_information"><?php echo htmlentities($this->nickname); ?></span>
 			</p>
 			<br />
 			<a href="/user/update" class="button">Edit your information</a>

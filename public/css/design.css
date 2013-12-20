@@ -7,6 +7,10 @@ html, body {
 	color: #b6b6b6;
 }
 
+label, input[type=submit], button {
+	cursor: pointer;
+}
+
 input, textarea, button {
 	font-family: 'latoregular', 'Trebuchet MS';
 }
@@ -527,7 +531,12 @@ hr.clear {
 	border-bottom: 1px solid #292929;
 }
 
+#connected_as {
+	text-transform: uppercase;
+	font-size: 0.8em;
+	padding-top: 8px;
+}
+
 pre.prettyprint {
     padding: 10px;
-    border-radius: 3px;
-}
+    border-radius: 3px;}

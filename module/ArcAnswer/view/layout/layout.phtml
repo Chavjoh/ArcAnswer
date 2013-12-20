@@ -50,12 +50,12 @@
 								<form action="/user/login" method="post">
 									<table border="0" cellspacing="0" cellpadding="2">
 										<tr>
-											<td>Login :</td>
-											<td><input type="text" name="login" /></td>
+											<td><label for="login">Login :</label></td>
+											<td><input type="text" name="login" id="login" /></td>
 										</tr>
 										<tr>
-											<td>Password :</td>
-											<td><input type="password" name="password" /></td>
+											<td><label for="password">Password :</label></td>
+											<td><input type="password" name="password" id="password" /></td>
 										</tr>
 									</table>
 									<input type="submit" value="Login" /> <span class="or">OR</span> <a href="/user/create">Create an account</a>
@@ -74,7 +74,13 @@
                         <?php } ?>
                     </select>
                     </form>
-                    <?php } ?>
+                    <?php
+                    }
+                    else {
+	                    if ($this->GLOBAL_AUTH->getIdentity() != null) {
+		                    echo '<div id="connected_as"> Connected as '.$this->GLOBAL_AUTH->getIdentity()->login.'</div>';
+	                    }
+                    }?>
 				</span>
 			<form action="/thread/index" method="post" class="center">
 				<input type="text" name="search" value="" class="searchInput" />

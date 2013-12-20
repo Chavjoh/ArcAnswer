@@ -9,7 +9,7 @@
 
     <!-- The question -->
     <section class="block blue">
-        <h1> <?php echo $this->thread->title ?> </h1>
+        <h1> <?php echo htmlentities($this->thread->title) ?> </h1>
         <div class="vote" id="vote_<?php echo $this->spePost['question'][0]->id ?>" >
             <span class="count"><?php echo $this->spePost['question'][0]->total_votes ? $this->spePost['question'][0]->total_votes : 0?></span>
             <span class="legend">votes</span>
@@ -27,12 +27,12 @@
         <div class="message">
             <div class="information">
                 <div class="author">
-                    Post&eacute; par <span><?php echo $this->spePost['question'][0]->user->nickname ?></span>
+                    Post&eacute; par <span><?php echo htmlentities($this->spePost['question'][0]->user->nickname) ?></span>
                     le <?php echo $this->spePost['question'][0]->date->format('d.m.Y \&\a\g\r\a\v\e; H:i:s') ?>
                 </div>
                 <div class="tag">
                     <?php foreach($this->thread->tags as $tag) { ?>
-                        <span><?php echo $tag->name ?></span>
+                        <span><?php echo htmlentities($tag->name) ?></span>
                     <?php } ?>
                     <?php if ($this->thread->mainPost->user == $this->user) { ?>
                     <form action="/thread/addtag" method="POST">
@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="content">
-                <?php echo $this->spePost['question'][0]->content; ?>
+                <?php echo htmlentities($this->spePost['question'][0]->content); ?>
             </div>
         </div>
         <hr class="clear" />
@@ -70,12 +70,12 @@
         <div class="message">
             <div class="information">
                 <div class="author">
-                    Post&eacute; par <span><?php echo $this->spePost['solution'][0]->user->nickname ?></span>
+                    Post&eacute; par <span><?php echo htmlentities($this->spePost['solution'][0]->user->nickname) ?></span>
                     le <?php echo $this->spePost['solution'][0]->date->format('d.m.Y \&\a\g\r\a\v\e; H:i:s') ?>
                 </div>
             </div>
             <div class="content">
-                <?php echo $this->spePost['solution'][0]->content; ?>
+                <?php echo htmlentities($this->spePost['solution'][0]->content); ?>
             </div>
         </div>
         <hr class="clear" />
@@ -102,12 +102,12 @@
             <div class="message">
                 <div class="information">
                     <div class="author">
-                        Post&eacute; par <span><?php echo $this->spePost['popular'][0]->user->nickname ?></span>
+                        Post&eacute; par <span><?php echo htmlentities($this->spePost['popular'][0]->user->nickname) ?></span>
                         le <?php echo $this->spePost['popular'][0]->date->format('d.m.Y \&\a\g\r\a\v\e; H:i:s') ?>
                     </div>
                 </div>
                 <div class="content">
-                    <?php echo $this->spePost['popular'][0]->content; ?>
+                    <?php echo htmlentities($this->spePost['popular'][0]->content); ?>
                 </div>
             </div>
             <hr class="clear" />
@@ -148,19 +148,15 @@
             <div class="message">
                 <div class="information">
                     <div class="author">
-                        Post&eacute; par <span><?php echo $post[0]->user->nickname ?></span>
+                        Post&eacute; par <span><?php echo htmlentities($post[0]->user->nickname) ?></span>
                         le <?php echo $post[0]->date->format('d.m.Y \&\a\g\r\a\v\e; H:i:s') ?>
                     </div>
                 </div>
                 <div class="content">
-                    <?php echo $post[0]->content; ?>
+                    <?php echo htmlentities($post[0]->content); ?>
                 </div>
             </div>
             <hr class="clear" />
         </section>
     <?php } ?>
-
-
-
-    <div class="center more"><a href="#">Afficher plus</a></div>
 </section>

@@ -7,11 +7,11 @@
 			<td>
 				<p>
 					<label>Login : <br />
-					<input type="text" name="login" value="<?php echo $this->login; ?>" /></label>
+					<input type="text" name="login" value="<?php echo htmlentities($this->login); ?>" /></label>
 				</p>
 				<p>
 					<label>Nickname : <br />
-					<input type="text" name="nick" value="<?php echo $this->nickname; ?>" /></label>
+					<input type="text" name="nick" value="<?php echo htmlentities($this->nickname); ?>" /></label>
 				</p>
 				<p>
 					<span class="user_notice">Leave blank to not change password</span><br />
