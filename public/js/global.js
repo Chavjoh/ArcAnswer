@@ -1,20 +1,12 @@
 $( document ).ready(function() {
-	/*var ddBasic = [
-		{ text: "Vote", value: 1, },
-		{ text: "Date", value: 2, }
-	];
-	
-	$('#orderBy').ddslick({
-		data: ddBasic,
-		background: 'transparent',
-		height: '100px',
-		selectText: "Order by"
-	});*/
 
-	$("#orderBy").chosen({
-		width: '200px',
-		disable_search: true
-	});
+    /*
+     * Chosen plugin for order by select box in header
+     */
+    $("#orderBy").chosen({
+        width: '200px',
+        disable_search: true
+    });
 
     /*
      * Switch up and down the comment block
@@ -26,7 +18,6 @@ $( document ).ready(function() {
 
     /*
      * Removes the information box in the dom
-     * TODO get the url in a dynamic way.
      */
     $("section#infoBox .close").click(function() {
         $.ajax({
@@ -48,6 +39,9 @@ $( document ).ready(function() {
     });
 });
 
+/*
+ * Vote system used in thread posts.
+ */
 function vote_click(post_id, value) {
     $("#vote_" + post_id + " .action").remove();
 
@@ -67,6 +61,9 @@ function vote_click(post_id, value) {
 
 var showDropdown = false;
 
+/*
+ * Dropdown menu used for user information box in header
+ */
 function dropdown_showHide(icon, content)
 {
 	if (showDropdown)
